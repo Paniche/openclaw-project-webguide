@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知识库 - 文档中心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f5f6f7;
+            color: #1f2329;
+            line-height: 1.6;
+        }
+
+        /* 顶部导航 */
+        .header {
+            background: #fff;
+            border-bottom: 1px solid #dee0e3;
+            padding: 0 24px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 600;
+            color: #3370ff;
+        }
+
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 8px 16px 8px 36px;
+            border: 1px solid #dee0e3;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: #3370ff;
+        }
+
+        .search-box::before {
+            content: "🔍";
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+        }
+
+        /* 主体布局 */
+        .main-container {
+            display: flex;
+            margin-top: 60px;
+            height: calc(100vh - 60px);
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            width: 280px;
+            background: #fff;
+            border-right: 1px solid #dee0e3;
+            overflow-y: auto;
+            padding: 16px 0;
+            transition: transform 0.3s;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 90;
+        }
+
+        .nav-item {
+            padding: 10px 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+            font-size: 14px;
+        }
+
+        .nav-item:hover {
+            background: #f5f6f7;
+        }
+
+        .nav-item.active {
+            background: #e8f0ff;
+            color: #3370ff;
+            border-right: 3px solid #3370ff;
+        }
+
+        .nav-item .icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item .arrow {
+            margin-left: auto;
+            transition: transform 0.3s;
+            font-size: 12px;
+        }
+
+        .nav-item.expanded .arrow {
+            transform: rotate(90deg);
+        }
+
+        .nav-children {
+            display: none;
+            background: #fafbfc;
+        }
+
+        .nav-children.show {
+            display: block;
+        }
+
+        .nav-child {
+            padding: 8px 24px 8px 52px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #646a73;
+            transition: all 0.2s;
+        }
+
+        .nav-child:hover {
+            background: #f5f6f7;
+            color: #1f2329;
+        }
+
+        .nav-child.active {
+            color: #3370ff;
+            background: #e8f0ff;
+        }
+
+        /* 内容区 */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 48px;
+            background: #fff;
+        }
+
+        .content-header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #dee0e3;
+        }
+
+        .content-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1f2329;
+        }
+
+        .content-body {
+            max-width: 800px;
+        }
+
+        .content-body h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 24px 0 12px;
+            color: #1f2329;
+        }
+
+        .content-body p {
+            margin-bottom: 16px;
+            color: #4f535a;
+            line-height: 1.8;
+        }
+
+        .content-body ul, .content-body ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+
+        .content-body li {
+            margin-bottom: 8px;
+            color: #4f535a;
+        }
+
+        .content-body code {
+            background: #f5f6f7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: "SF Mono", Monaco, monospace;
+            font-size: 14px;
+        }
+
+        .content-body pre {
+            background: #f5f6f7;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        .content-body pre code {
+            background: none;
+            padding: 0;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .search-box {
+                width: 150px;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 60px;
+                bottom: 0;
+                transform: translateX(-100%);
+                z-index: 95;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
+
+            .content {
+                padding: 24px;
+            }
+        }
+
+        /* 返回链接 */
+        .back-link {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #3370ff;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(51, 112, 255, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .back-link:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header class="header">
+        <div class="header-left">
+            <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+            <div class="logo">📚 知识库</div>
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="搜索文档..." id="searchInput">
+        </div>
+    </header>
+
+    <!-- 主体 -->
+    <div class="main-container">
+        <!-- 侧边栏 -->
+        <nav class="sidebar" id="sidebar">
+            <div class="nav-item active" onclick="showContent('home', this)">
+                <span class="icon">🏠</span>
+                <span>首页</span>
+            </div>
+
+            <div class="nav-item" onclick="toggleChildren(this)">
+                <span class="icon">📖</span>
+                <span>产品文档</span>
+                <span class="arrow">▶</span>
+            </div>
+            <div class="nav-children">
+                <div class="nav-child" onclick="showContent('quickstart', this)">快速开始</div>
+                <div class="nav-child" onclick="showContent('guide', this)">用户指南</div>
+            </div>
+
+            <div class="nav-item" onclick="toggleChildren(this)">
+                <span class="icon">💻</span>
+                <span>开发文档</span>
+                <span class="arrow">▶</span>
+            </div>
+            <div class="nav-children">
+                <div class="nav-child" onclick="showContent('api', this)">API文档</div>
+                <div class="nav-child" onclick="showContent('faq', this)">常见问题</div>
+            </div>
+        </nav>
+
+        <!-- 遮罩层 -->
+        <div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+        <!-- 内容区 -->
+        <main class="content" id="content">
+            <div class="content-header">
+                <h1 id="pageTitle">欢迎使用知识库</h1>
+            </div>
+            <div class="content-body" id="pageContent">
+                <p>这是一个简单易用的知识库系统，帮助您管理和查阅文档。</p>
+                <h2>主要功能</h2>
+                <ul>
+                    <li>📁 文档分类管理 - 清晰的目录结构，方便浏览</li>
+                    <li>🔍 全文搜索 - 快速定位所需内容</li>
+                    <li>📱 响应式设计 - 支持桌面和移动设备</li>
+                    <li>⚡ 快速访问 - 点击左侧导航即可切换内容</li>
+                </ul>
+
+                <h2>使用指南</h2>
+                <p>点击左侧导航菜单查看不同文档。在移动设备上，点击左上角的 ☰ 按钮可以展开侧边栏。</p>
+            </div>
+        </main>
+    </div>
+
+    <a href="../index.html" class="back-link">← 返回导航页</a>
+
+    <script>
+        // 内容数据
+        const contents = {
+            home: {
+                title: '欢迎使用知识库',
+                content: `
+                    <p>这是一个简单易用的知识库系统，帮助您管理和查阅文档。</p>
+                    
+                    <h2>主要功能</h2>
+                    <ul>
+                        <li>📁 文档分类管理 - 清晰的目录结构，方便浏览</li>
+                        <li>🔍 全文搜索 - 快速定位所需内容</li>
+                        <li>📱 响应式设计 - 支持桌面和移动设备</li>
+                        <li>⚡ 快速访问 - 点击左侧导航即可切换内容</li>
+                    </ul>
+
+                    <h2>使用指南</h2>
+                    <p>点击左侧导航菜单查看不同文档。在移动设备上，点击左上角的 ☰ 按钮可以展开侧边栏。</p>
+                `
+            },
+            quickstart: {
+                title: '快速开始',
+                content: `
+                    <p>欢迎使用我们的产品！本指南将帮助您快速上手。</p>
+                    
+                    <h2>第一步：注册账号</h2>
+                    <p>访问我们的官网，点击"注册"按钮，填写邮箱和密码完成注册。</p>
+
+                    <h2>第二步：创建项目</h2>
+                    <p>登录后，点击"新建项目"，输入项目名称和描述，即可创建您的第一个项目。</p>
+
+                    <h2>第三步：开始使用</h2>
+                    <p>现在您可以开始使用所有功能了。建议先查看用户指南了解更多详细功能。</p>
+
+                    <pre><code>// 示例代码
+const project = await createProject({
+  name: '我的项目',
+  description: '项目描述'
+});
+console.log('项目创建成功:', project.id);</code></pre>
+                `
+            },
+            guide: {
+                title: '用户指南',
+                content: `
+                    <p>本文档详细介绍产品的各项功能和使用方法。</p>
+                    
+                    <h2>功能模块</h2>
+                    
+                    <h3>1. 项目管理</h3>
+                    <p>支持创建多个项目，每个项目都有独立的配置和数据。您可以随时切换项目或创建新项目。</p>
+
+                    <h3>2. 团队协作</h3>
+                    <p>邀请团队成员加入项目，设置不同权限级别（管理员、编辑、查看者）。</p>
+
+                    <h3>3. 数据分析</h3>
+                    <p>实时查看项目数据，生成报表，导出数据。</p>
+
+                    <h2>快捷键</h2>
+                    <ul>
+                        <li><code>Ctrl + N</code> - 新建</li>
+                        <li><code>Ctrl + S</code> - 保存</li>
+                        <li><code>Ctrl + F</code> - 搜索</li>
+                        <li><code>Ctrl + /</code> - 帮助</li>
+                    </ul>
+                `
+            },
+            api: {
+                title: 'API文档',
+                content: `
+                    <p>本文档介绍所有可用的 API 接口。</p>
+                    
+                    <h2>基础信息</h2>
+                    <ul>
+                        <li>API 地址：<code>https://api.example.com/v1</code></li>
+                        <li>认证方式：Bearer Token</li>
+                        <li>数据格式：JSON</li>
+                    </ul>
+
+                    <h2>项目 API</h2>
+
+                    <h3>获取项目列表</h3>
+                    <p><strong>GET</strong> <code>/projects</code></p>
+                    
+                    <pre><code>// 请求
+GET /v1/projects?page=1&limit=10
+Authorization: Bearer {token}
+
+// 响应
+{
+  "data": [
+    {
+      "id": "proj_123",
+      "name": "示例项目",
+      "created_at": "2024-01-15T08:30:00Z"
+    }
+  ],
+  "total": 100
+}</code></pre>
+
+                    <h3>创建项目</h3>
+                    <p><strong>POST</strong> <code>/projects</code></p>
+
+                    <pre><code>// 请求
+POST /v1/projects
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "新项目",
+  "description": "项目描述"
+}</code></pre>
+                `
+            },
+            faq: {
+                title: '常见问题',
+                content: `
+                    <p>以下是用户经常问到的问题。</p>
+                    
+                    <h2>Q: 如何重置密码？</h2>
+                    <p>A: 在登录页面点击"忘记密码"，输入您的邮箱，我们会发送重置链接到您的邮箱。</p>
+
+                    <h2>Q: 支持哪些支付方式？</h2>
+                    <p>A: 我们支持支付宝、微信支付、银行卡等多种支付方式。</p>
+
+                    <h2>Q: 如何联系客服？</h2>
+                    <p>A: 您可以通过以下方式联系我们：</p>
+                    <ul>
+                        <li>邮箱：support@example.com</li>
+                        <li>在线客服：工作日 9:00-18:00</li>
+                        <li>电话：400-123-4567</li>
+                    </ul>
+
+                    <h2>Q: 数据是否安全？</h2>
+                    <p>A: 是的，我们采用银行级别的加密技术保护您的数据，所有数据传输都使用 SSL 加密。</p>
+
+                    <h2>Q: 是否支持导出数据？</h2>
+                    <p>A: 支持，您可以随时导出您的数据为 Excel、CSV 或 JSON 格式。</p>
+                `
+            }
+        };
+
+        // 切换子菜单
+        function toggleChildren(element) {
+            element.classList.toggle('expanded');
+            const children = element.nextElementSibling;
+            if (children) {
+                children.classList.toggle('show');
+            }
+        }
+
+        // 显示内容
+        function showContent(key, element) {
+            const data = contents[key];
+            if (!data) return;
+
+            // 更新标题和内容
+            document.getElementById('pageTitle').textContent = data.title;
+            document.getElementById('pageContent').innerHTML = data.content;
+
+            // 更新激活状态
+            document.querySelectorAll('.nav-item, .nav-child').forEach(el => {
+                el.classList.remove('active');
+            });
+            element.classList.add('active');
+
+            // 移动端关闭侧边栏
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+        }
+
+        // 切换侧边栏（移动端）
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+            document.getElementById('overlay').classList.toggle('show');
+        }
+
+        // 搜索功能
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            if (!query) return;
+
+            // 简单的搜索提示
+            for (let key in contents) {
+                if (contents[key].title.toLowerCase().includes(query) || 
+                    contents[key].content.toLowerCase().includes(query)) {
+                    console.log('找到匹配:', contents[key].title);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
