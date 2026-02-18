@@ -935,7 +935,73 @@ Content-Type: application/json
                     <li><code>&lt;pre></code><code>&lt;code></code></code>：代码块</li>
                     <li><code>&lt;div class="callout"></code>：提示框</li>
                     <li><code>&lt;a href="#" onclick="showSection('xxx')"></code>：内部链接</li>
+                    <li><code>&lt;img&gt;</code>：图片</li>
+                    <li><code>&lt;table&gt;</code>：表格</li>
                 </ul>
+
+                <h2>更多示例</h2>
+
+                <h3>添加带图片的页面</h3>
+                <pre><code>&lt;section id="image-page" class="content-section"&gt;
+    &lt;div class="breadcrumb"&gt;&lt;a href="#"&gt;首页&lt;/a&gt; / 示例 / 图片页面&lt;/div&gt;
+    &lt;h1&gt;图片示例&lt;/h1&gt;
+    &lt;img src="图片地址.jpg" alt="描述文字" style="max-width: 100%; border-radius: 8px;"&gt;
+    &lt;p&gt;图片说明文字...&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+
+                <h3>添加表格</h3>
+                <pre><code>&lt;section id="table-page" class="content-section"&gt;
+    &lt;div class="breadcrumb"&gt;&lt;a href="#"&gt;首页&lt;/a&gt; / 示例 / 表格页面&lt;/div&gt;
+    &lt;h1&gt;数据表格&lt;/h1&gt;
+    &lt;table style="width: 100%; border-collapse: collapse;"&gt;
+        &lt;thead&gt;
+            &lt;tr style="background: #f5f5f5;"&gt;
+                &lt;th style="padding: 12px; border: 1px solid #ddd;"&gt;名称&lt;/th&gt;
+                &lt;th style="padding: 12px; border: 1px solid #ddd;"&gt;说明&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td style="padding: 12px; border: 1px solid #ddd;"&gt;项目1&lt;/td&gt;
+                &lt;td style="padding: 12px; border: 1px solid #ddd;"&gt;说明1&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/section&gt;</code></pre>
+
+                <h3>添加多个子页面</h3>
+                <pre><code>&lt;!-- 导航部分 --&gt;
+&lt;div class="nav-section"&gt;
+    &lt;div class="nav-header" onclick="toggleSection(this)"&gt;
+        &lt;span&gt;📚 教程&lt;/span&gt;
+        &lt;span class="arrow"&gt;▼&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="nav-items"&gt;
+        &lt;a class="nav-item" data-section="tutorial-1" onclick="showSection('tutorial-1', this)"&gt;基础教程&lt;/a&gt;
+        &lt;a class="nav-item sub-item" data-section="tutorial-2" onclick="showSection('tutorial-2', this)"&gt;- 进阶教程&lt;/a&gt;
+        &lt;a class="nav-item sub-item" data-section="tutorial-3" onclick="showSection('tutorial-3', this)"&gt;- 高级教程&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+                <h2>常见问题</h2>
+
+                <h3>Q: 添加后页面不显示？</h3>
+                <p>A: 检查以下几点：</p>
+                <ul>
+                    <li><code>id</code> 和 <code>data-section</code> 是否匹配</li>
+                    <li>内容区块是否有 <code>content-section</code> 类</li>
+                    <li>文件是否保存成功</li>
+                </ul>
+
+                <h3>Q: 如何设置默认显示页面？</h3>
+                <p>A: 给对应的内容区块添加 <code>active</code> 类：</p>
+                <pre><code>&lt;section id="home" class="content-section active"&gt;...&lt;/section&gt;
+&lt;a class="nav-item active" ...&gt;首页&lt;/a&gt;</code></pre>
+
+                <h3>Q: 如何添加外部链接？</h3>
+                <p>A: 使用普通 <code>&lt;a&gt;</code> 标签：</p>
+                <pre><code>&lt;a href="https://example.com" target="_blank"&gt;外部链接&lt;/a&gt;</code></pre>
+
 
                 <div class="callout">
                     <div class="callout-title">🎉 完成！</div>
