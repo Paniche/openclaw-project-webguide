@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw 导航 - 智能助手入口</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-claw"></i>
+                <h1>OpenClaw 导航</h1>
+            </div>
+            <p class="subtitle">智能助手入口 - 高效工作，从这里开始</p>
+        </header>
+
+        <!-- Search Box -->
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="搜索工具、链接或资源...">
+            </div>
+        </div>
+
+        <!-- Categories -->
+        <main class="categories">
+            <!-- AI Tools -->
+            <section class="category" data-category="ai">
+                <div class="category-header">
+                    <i class="fas fa-robot"></i>
+                    <h2>AI 工具</h2>
+                </div>
+                <div class="links">
+                    <a href="https://chat.openai.com" class="link-card" target="_blank">
+                        <div class="link-icon"><i class="fas fa-comments"></i></div>
+                        <div class="link-info">
+                            <h3>ChatGPT</h3>
+                            <p>OpenAI 对话助手</p>
+                        </div>
+                    </a>
+                    <a href="https://claude.ai" class="link-card" target="_blank">
+                        <div class="link-icon"><i class="fas fa-brain"></i></div>
+                        <div class="link-info">
+                            <h3>Claude</h3>
+                            <p>Anthropic AI 助手</p>
+                        </div>
+                    </a>
+                    <a href="https://gemini.google.com" class="link-card" target="_blank">
+                        <div class="link-icon"><i class="fas fa-star"></i></div>
+                        <div class="link-info">
+                            <h3>Gemini</h3>
+                            <p>Google AI 助手</p>
+                        </div>
+                    </a>
+                    <a href="https://www.midjourney.com" class="link-card" target="_blank">
+                        <div class="link-icon"><i class="fas fa-palette"></i></div>
+                        <div class="link-info">
+                            <h3>Midjourney</h3>
+                            <p>AI 图像生成</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Development -->
+            <section class="category" data-category="dev">
+                <div class="category-header">
+                    <i class="fas fa-code"></i>
+                    <h2>开发工具</h2>
+                </div>
+                <div class="links">
+                    <a href="https://github.com" class="link-card" target="_blank">
+                        <div class="link-icon"><i class="fab fa-github"></i></div>
+                        <div class="link-info">
+                            <h3>GitHub</h3>
+                            <p>代码托管平台</p>
+                        </div>
+                    </a>
+                    <a href="https://clawhub.com" class="link-card" target="_blank">
+                        <div class="link-icon"><i class="fas fa-cube"></i></div>
+                        <div class="link-info">
+                            <h3>ClawHub</h3>
+                            <p>OpenClaw 技能市场</p>
+                        </div>
+                    </a>
+                    <a href="https://vscode.dev" class="link-card" target="_blank">
+                        <div class="link-icon"><i class="fas fa-laptop-code"></i></div>
+                        <div class="link-info">
+                            <h3>VS Code Web</h3>
+                            <p>在线代码编辑器</p>
+                        </div>
+                    </a>
+                    <a href="https://www.openclaw.ai" class="link-card" target="_blank">
+                        <div class="link-icon"><i class="fas fa-terminal"></i></div>
+                        <div class="link-info">
+                            <h3>OpenClaw</h3>
+                            <p>智能助手平台</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Productivity -->
+            <section class="category" data-category="productivity">
+                <div class="category-header">
+                    <i class="fas fa-bolt"></i>
+                    <h2>效率工具</h2>
+                </div>
+                <div class="links">
+                    <a href="https://www.notion.so" class="link-card" target="_blank">
+                        <div class="link-icon"><i class="fas fa-book"></i></div>
+                        <div class="link-info">
+                            <h3>Notion</h3>
+                            <p>笔记与知识管理</p>
+                        </div>
+                    </a>
+                    <a href="https://www.figma.com" class="link-card" target="_blank">
+                        <div class="link-icon"><i class="fab fa-figma"></i></div>
+                        <div class="link-info">
+                            <h3>Figma</h3>
+                            <p>设计协作工具</p>
+                        </div>
+                    </a>
+                    <a href="https://excalidraw.com" class="link-card" target="_blank">
+                        <div class="link-icon"><i class="fas fa-pencil-alt"></i></div>
+                        <div class="link-info">
+                            <h3>Excalidraw</h3>
+                            <p>手绘风格白板</p>
+                        </div>
+                    </a>
+                    <a href="https://calendar.google.com" class="link-card" target="_blank">
+                        <div class="link-icon"><i class="far fa-calendar-alt"></i></div>
+                        <div class="link-info">
+                            <h3>Google 日历</h3>
+                            <p>日程管理</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Learning -->
+            <section class="category" data-category="learning">
+                <div class="category-header">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h2>学习资源</h2>
+                </div>
+                <div class="links">
+                    <a href="https://docs.openclaw.ai" class="link-card" target="_blank">
+                        <div class="link-icon"><i class="fas fa-book-open"></i></div>
+                        <div class="link-info">
+                            <h3>OpenClaw 文档</h3>
+                            <p>官方使用指南</p>
+                        </div>
+                    </a>
+                    <a href="https://developer.mozilla.org" class="link-card" target="_blank">
+                        <div class="link-icon"><i class="fab fa-firefox"></i></div>
+                        <div class="link-info">
+                            <h3>MDN</h3>
+                            <p>Web 开发文档</p>
+                        </div>
+                    </a>
+                    <a href="https://stackoverflow.com" class="link-card" target="_blank">
+                        <div class="link-icon"><i class="fab fa-stack-overflow"></i></div>
+                        <div class="link-info">
+                            <h3>Stack Overflow</h3>
+                            <p>开发者问答</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Made with <i class="fas fa-heart"></i> by OpenClaw</p>
+            <p class="update-time">最后更新：<span id="updateTime"></span></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
