@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文档中心 - 新生指引</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0066cc;
+            --primary-light: #e6f0fa;
+            --text-color: #333;
+            --text-light: #666;
+            --border-color: #e0e0e0;
+            --bg-color: #fafafa;
+            --sidebar-width: 280px;
+            --header-height: 60px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: var(--text-color);
+            background: #fff;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: #fff;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 100;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            margin-right: 12px;
+            color: var(--text-color);
+        }
+
+        .site-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-color);
+            white-space: nowrap;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .search-box::before {
+            content: "🔍";
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            margin-top: var(--header-height);
+            min-height: calc(100vh - var(--header-height));
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-color);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 50;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+
+        .nav-section {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--text-color);
+            transition: background 0.2s;
+            user-select: none;
+        }
+
+        .nav-header:hover {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .nav-header .arrow {
+            font-size: 10px;
+            transition: transform 0.2s;
+        }
+
+        .nav-header.collapsed .arrow {
+            transform: rotate(-90deg);
+        }
+
+        .nav-items {
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .nav-items.collapsed {
+            max-height: 0 !important;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 10px 16px 10px 32px;
+            font-size: 14px;
+            color: var(--text-light);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.15s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            color: var(--primary-color);
+            background: var(--primary-light);
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            background: var(--primary-light);
+            border-left-color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .nav-item.sub-item {
+            padding-left: 48px;
+            font-size: 13px;
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 40px;
+            max-width: 900px;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-section h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .content-section h2 {
+            font-size: 24px;
+            margin: 32px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+        .content-section h3 {
+            font-size: 18px;
+            margin: 24px 0 12px;
+            color: var(--text-color);
+        }
+
+        .content-section p {
+            margin-bottom: 16px;
+            color: var(--text-color);
+        }
+
+        .content-section ul, .content-section ol {
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+
+        .content-section li {
+            margin-bottom: 8px;
+        }
+
+        .content-section a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .content-section a:hover {
+            text-decoration: underline;
+        }
+
+        .callout {
+            background: var(--primary-light);
+            border-left: 4px solid var(--primary-color);
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 13px;
+        }
+
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        .breadcrumb {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-color);
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .site-title {
+                font-size: 16px;
+            }
+
+            .search-box {
+                display: none;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 24px 20px;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: var(--header-height);
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.3);
+                z-index: 40;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
+        }
+
+        /* Scroll to top */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 44px;
+            height: 44px;
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 102, 204, 0.3);
+            transition: transform 0.2s, opacity 0.2s;
+            z-index: 60;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-2px);
+        }
+
+        .scroll-top.show {
+            display: flex;
+        }
+
+        /* Search highlight */
+        .highlight {
+            background: #ffe066;
+            padding: 1px 3px;
+            border-radius: 2px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-light);
+            font-size: 13px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+        <div class="site-title">📚 文档中心</div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="搜索文档..." oninput="handleSearch(this.value)">
+        </div>
+    </header>
+
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <!-- 首页 -->
+            <div class="nav-section">
+                <div class="nav-header" onclick="toggleSection(this)">
+                    <span>🏠 首页</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="nav-items">
+                    <a class="nav-item active" data-section="home" onclick="showSection('home', this)">欢迎首页</a>
+                </div>
+            </div>
+
+            <!-- 指南 -->
+            <div class="nav-section">
+                <div class="nav-header" onclick="toggleSection(this)">
+                    <span>📖 指南</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="nav-items">
+                    <a class="nav-item" data-section="getting-started" onclick="showSection('getting-started', this)">快速开始</a>
+                    <a class="nav-item" data-section="installation" onclick="showSection('installation', this)">安装配置</a>
+                    <a class="nav-item" data-section="tutorial" onclick="showSection('tutorial', this)">基础教程</a>
+                    <a class="nav-item sub-item" data-section="basic-usage" onclick="showSection('basic-usage', this)">- 基础使用</a>
+                    <a class="nav-item sub-item" data-section="advanced" onclick="showSection('advanced', this)">- 高级功能</a>
+                </div>
+            </div>
+
+            <!-- API文档 -->
+            <div class="nav-section">
+                <div class="nav-header" onclick="toggleSection(this)">
+                    <span>🔧 API文档</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="nav-items">
+                    <a class="nav-item" data-section="api-overview" onclick="showSection('api-overview', this)">API 概览</a>
+                    <a class="nav-item sub-item" data-section="api-auth" onclick="showSection('api-auth', this)">- 认证接口</a>
+                    <a class="nav-item sub-item" data-section="api-users" onclick="showSection('api-users', this)">- 用户接口</a>
+                    <a class="nav-item sub-item" data-section="api-data" onclick="showSection('api-data', this)">- 数据接口</a>
+                </div>
+            </div>
+
+            <!-- FAQ -->
+            <div class="nav-section">
+                <div class="nav-header" onclick="toggleSection(this)">
+                    <span>❓ 常见问题</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="nav-items">
+                    <a class="nav-item" data-section="faq-general" onclick="showSection('faq-general', this)">通用问题</a>
+                    <a class="nav-item" data-section="faq-technical" onclick="showSection('faq-technical', this)">技术问题</a>
+                    <a class="nav-item" data-section="faq-billing" onclick="showSection('faq-billing', this)">账单问题</a>
+                </div>
+            </div>
+
+            <!-- 关于 -->
+            <div class="nav-section">
+                <div class="nav-header" onclick="toggleSection(this)">
+                    <span>ℹ️ 关于</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="nav-items">
+                    <a class="nav-item" data-section="about" onclick="showSection('about', this)">关于我们</a>
+                    <a class="nav-item" data-section="changelog" onclick="showSection('changelog', this)">更新日志</a>
+                    <a class="nav-item" data-section="contact" onclick="showSection('contact', this)">联系我们</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Content Area -->
+        <main class="content">
+            <!-- 首页欢迎 -->
+            <section id="home" class="content-section active">
+                <div class="breadcrumb"><a href="#">首页</a> / 欢迎首页</div>
+                <h1>欢迎来到文档中心</h1>
+                <p>欢迎使用本项目文档中心！这里汇集了完整的使用指南、API文档和常见问题解答。</p>
+                
+                <div class="callout">
+                    <div class="callout-title">💡 提示</div>
+                    <p>建议从「快速开始」开始了解本项目，或使用顶部搜索框查找特定内容。</p>
+                </div>
+
+                <h2>快速导航</h2>
+                <ul>
+                    <li><strong>新手入门</strong>：查看 <a href="#" onclick="showSection('getting-started')">快速开始</a> 了解基本使用</li>
+                    <li><strong>开发指南</strong>：阅读 <a href="#" onclick="showSection('tutorial')">基础教程</a> 深入学习</li>
+                    <li><strong>API参考</strong>：查阅 <a href="#" onclick="showSection('api-overview')">API 文档</a></li>
+                    <li><strong>解决问题</strong>：浏览 <a href="#" onclick="showSection('faq-general')">常见问题</a></li>
+                </ul>
+
+                <h2>功能特点</h2>
+                <ul>
+                    <li>简洁直观的界面设计，易于导航</li>
+                    <li>完整的文档内容，随时查阅</li>
+                    <li>快速搜索功能，快速定位内容</li>
+                    <li>响应式设计，支持移动端访问</li>
+                    <li>持续更新，及时修复问题</li>
+                </ul>
+
+                <h2>版本信息</h2>
+                <p>当前版本：<strong>v2.0.0</strong></p>
+                <p>最后更新：2026年2月</p>
+            </section>
+
+            <!-- 快速开始 -->
+            <section id="getting-started" class="content-section">
+                <div class="breadcrumb"><a href="#">首页</a> / 指南 / 快速开始</div>
+                <h1>快速开始</h1>
+                <p>本指南将帮助您快速了解并开始使用本项目。</p>
+
+                <h2>前置要求</h2>
+                <ul>
+                    <li>Node.js 16.0 或更高版本</li>
+                    <li>npm 或 yarn 包管理器</li>
+                    <li>现代浏览器（Chrome、Firefox、Safari、Edge）</li>
+                </ul>
+
+                <h2>安装步骤</h2>
+                <h3>1. 克隆项目</h3>
+                <pre><code>git clone https://github.com/example/project.git
+cd project</code></pre>
+
+                <h3>2. 安装依赖</h3>
+                <pre><code>npm install</code></pre>
+
+                <h3>3. 启动项目</h3>
+                <pre><code>npm run dev</code></pre>
+
+                <p>启动后，访问 <code>http://localhost:3000</code> 查看效果。</p>
+
+                <div class="callout">
+                    <div class="callout-title">⚠️ 注意</div>
+                    <p>如果遇到端口被占用的问题，可以修改 <code>.env</code> 文件中的端口配置。</p>
+                </div>
+            </section>
+
+            <!-- 安装配置 -->
+            <section id="installation" class="content-section">
+                <div class="breadcrumb"><a href="#">首页</a> / 指南 / 安装配置</div>
+                <h1>安装配置</h1>
+                <p>详细的安装和配置说明文档。</p>
+
+                <h2>环境配置</h2>
+                <p>在开始之前，请确保您的开发环境满足以下要求：</p>
+                <ul>
+                    <li>操作系统：Windows / macOS / Linux</li>
+                    <li>Node.js：≥ 16.0.0</li>
+                    <li>npm：≥ 8.0.0</li>
+                </ul>
+
+                <h2>配置文件</h2>
+                <p>项目根目录下的 <code>.env</code> 文件用于配置环境变量：</p>
+                <pre><code>PORT=3000
+DATABASE_URL=postgres://localhost:5432/mydb
+API_KEY=your-api-key-here
+NODE_ENV=development</code></pre>
+
+                <h2>数据库设置</h2>
+                <p>如需使用数据库，请先创建数据库：</p>
+                <pre><code>npm run db:create
+npm run db:migrate</code></pre>
+            </section>
+
+            <!-- 基础教程 -->
+            <section id="tutorial" class="content-section">
+                <div class="breadcrumb"><a href="#">首页</a> / 指南 / 基础教程</div>
+                <h1>基础教程</h1>
+                <p>学习本项目的基础知识和核心概念。</p>
+
+                <h2>核心概念</h2>
+                <h3>1. 模块系统</h3>
+                <p>项目采用模块化设计，每个功能模块独立存放，便于维护和扩展。</p>
+
+                <h3>2. 数据流</h3>
+                <p>遵循单向数据流原则，确保应用状态可预测。</p>
+
+                <h3>3. 路由管理</h3>
+                <p>使用文件路由系统，自动扫描并注册路由。</p>
+            </section>
+
+            <!-- 基础使用 -->
+            <section id="basic-usage" class="content-section">
+                <div class="breadcrumb"><a href="#">首页</a> / 指南 / 基础教程 / 基础使用</div>
+                <h1>基础使用</h1>
+                <p>学习基本的使用方法。</p>
+
+                <h2>创建页面</h2>
+                <p>在 <code>pages</code> 目录下创建新的 Vue 文件即可自动生成路由。</p>
+                <pre><code>&lt;template&gt;
+  &lt;div&gt;
+    &lt;h1&gt;我的页面&lt;/h1&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+
+                <h2>使用组件</h2>
+                <p>通过 import 引入并使用组件：</p>
+                <pre><code>import MyComponent from '@/components/MyComponent.vue'</code></pre>
+            </section>
+
+            <!-- 高级功能 -->
+            <section id="advanced" class="content-section">
+                <div class="breadcrumb"><a href="#">首页</a> / 指南 / 基础教程 / 高级功能</div>
+                <h1>高级功能</h1>
+                <p>探索项目的高级特性和优化技巧。</p>
+
+                <h2>性能优化</h2>
+                <ul>
+                    <li>使用组件懒加载</li>
+                    <li>启用缓存机制</li>
+                    <li>优化资源加载顺序</li>
+                </ul>
+
+                <h2>自定义配置</h2>
+                <p>通过配置文件自定义构建和运行行为。</p>
+            </section>
+
+            <!-- API概览 -->
+            <section id="api-overview" class="content-section">
+                <div class="breadcrumb"><a href="#">首页</a> / API文档 / API概览</div>
+                <h1>API 概览</h1>
+                <p>本项目的 API 采用 RESTful 风格设计，所有接口均返回 JSON 格式数据。</p>
+
+                <h2>基础URL</h2>
+                <pre><code>https://api.example.com/v1</code></pre>
+
+                <h2>通用响应格式</h2>
+                <pre><code>{
+  "code": 200,
+  "message": "success",
+  "data": {}
+}</code></pre>
+
+                <h2>HTTP 状态码</h2>
+                <ul>
+                    <li><code>200</code> - 请求成功</li>
+                    <li><code>400</code> - 请求参数错误</li>
+                    <li><code>401</code> - 未授权</li>
+                    <li><code>404</code> - 资源不存在</li>
+                    <li><code>500</code> - 服务器错误</li>
+                </ul>
+            </section>
+
+            <!-- API认证 -->
+            <section id="api-auth" class="content-section">
+                <div class="breadcrumb"><a href="#">首页</a> / API文档 / API概览 / 认证接口</div>
+                <h1>认证接口</h1>
+                <p>用户认证相关 API。</p>
+
+                <h2>用户登录</h2>
+                <pre><code>POST /auth/login
+Content-Type: application/json
+
+{
+  "username": "user@example.com",
+  "password": "password123"
+}</code></pre>
+
+                <h3>响应</h3>
+                <pre><code>{
+  "code": 200,
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIs...",
+    "expiresIn": 7200
+  }
+}</code></pre>
+            </section>
+
+            <!-- API用户 -->
+            <section id="api-users" class="content-section">
+                <div class="breadcrumb"><a href="#">首页</a> / API文档 / API概览 / 用户接口</div>
+                <h1>用户接口</h1>
+                <p>用户管理相关 API。</p>
+
+                <h2>获取用户信息</h2>
+                <pre><code>GET /users/:id
+Authorization: Bearer {token}</code></pre>
+
+                <h2>更新用户信息</h2>
+                <pre><code>PUT /users/:id
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "新名称",
+  "email": "newemail@example.com"
+}</code></pre>
+            </section>
+
+            <!-- API数据 -->
+            <section id="api-data" class="content-section">
+                <div class="breadcrumb"><a href="#">首页</a> / API文档 / API概览 / 数据接口</div>
+                <h1>数据接口</h1>
+                <p>数据操作相关 API。</p>
+
+                <h2>获取数据列表</h2>
+                <pre><code>GET /data?page=1&limit=10
+Authorization: Bearer {token}</code></pre>
+
+                <h2>创建数据</h2>
+                <pre><code>POST /data
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "title": "数据标题",
+  "content": "数据内容"
+}</code></pre>
+            </section>
+
+            <!-- FAQ通用 -->
+            <section id="faq-general" class="content-section">
+                <div class="breadcrumb"><a href="#">首页</a> / 常见问题 / 通用问题</div>
+                <h1>常见问题 - 通用</h1>
+
+                <h2>Q: 如何注册账号？</h2>
+                <p>A: 点击登录页面的「注册」按钮，填写相关信息即可完成注册。</p>
+
+                <h2>Q: 忘记密码怎么办？</h2>
+                <p>A: 在登录页面点击「忘记密码」，通过绑定的邮箱找回密码。</p>
+
+                <h2>Q: 如何修改个人信息？</h2>
+                <p>A: 登录后进入「个人中心」-「账号设置」即可修改。</p>
+            </section>
+
+            <!-- FAQ技术 -->
+            <section id="faq-technical" class="content-section">
+                <div class="breadcrumb"><a href="#">首页</a> / 常见问题 / 技术问题</div>
+                <h1>常见问题 - 技术</h1>
+
+                <h2>Q: 支持哪些浏览器？</h2>
+                <p>A: 支持 Chrome、Firefox、Safari、Edge 等现代浏览器，建议使用最新版本。</p>
+
+                <h2>Q: 页面加载缓慢怎么办？</h2>
+                <p>A: 请检查网络连接，或尝试清除浏览器缓存。</p>
+
+                <h2>Q: 遇到 bug 如何反馈？</h2>
+                <p>A: 可以在 GitHub 仓库提交 issue，或联系技术支持。</p>
+            </section>
+
+            <!-- FAQ账单 -->
+            <section id="faq-billing" class="content-section">
+                <div class="breadcrumb"><a href="#">首页</a> / 常见问题 / 账单问题</div>
+                <h1>常见问题 - 账单</h1>
+
+                <h2>Q: 如何查看账单？</h2>
+                <p>A: 登录后进入「个人中心」-「账单记录」查看详细账单。</p>
+
+                <h2>Q: 支持哪些支付方式？</h2>
+                <p>A: 支持支付宝、微信支付、银行卡等主流支付方式。</p>
+
+                <h2>Q: 如何申请发票？</h2>
+                <p>A: 在「账单记录」页面点击「开发票」按钮，填写发票信息后提交。</p>
+            </section>
+
+            <!-- 关于我们 -->
+            <section id="about" class="content-section">
+                <div class="breadcrumb"><a href="#">首页</a> / 关于 / 关于我们</div>
+                <h1>关于我们</h1>
+                <p>我们是一个专注于技术文档和开发指南的团队。</p>
+
+                <h2>团队介绍</h2>
+                <p>成立于 2023 年，致力于为开发者提供优质的技术文档和学习资源。</p>
+
+                <h2>我们的使命</h2>
+                <p>让技术文档变得简单易懂，帮助每一位开发者快速成长。</p>
+
+                <h2>核心价值</h2>
+                <ul>
+                    <li>用户至上：我们始终以用户需求为导向</li>
+                    <li>持续创新：不断改进，追求卓越</li>
+                    <li>开放合作：欢迎社区贡献和建议</li>
+                </ul>
+            </section>
+
+            <!-- 更新日志 -->
+            <section id="changelog" class="content-section">
+                <div class="breadcrumb"><a href="#">首页</a> / 关于 / 更新日志</div>
+                <h1>更新日志</h1>
+
+                <h2>v2.0.0 - 2026年2月</h2>
+                <ul>
+                    <li>全新界面设计</li>
+                    <li>新增搜索功能</li>
+                    <li>优化移动端体验</li>
+                    <li>修复若干已知问题</li>
+                </ul>
+
+                <h2>v1.5.0 - 2025年12月</h2>
+                <ul>
+                    <li>新增 API 文档</li>
+                    <li>增加 FAQ 板块</li>
+                    <li>优化加载性能</li>
+                </ul>
+
+                <h2>v1.0.0 - 2025年6月</h2>
+                <ul>
+                    <li>初始版本发布</li>
+                    <li>基础文档功能</li>
+                </ul>
+            </section>
+
+            <!-- 联系我们 -->
+            <section id="contact" class="content-section">
+                <div class="breadcrumb"><a href="#">首页</a> / 关于 / 联系我们</div>
+                <h1>联系我们</h1>
+                <p>如果您有任何问题或建议，欢迎与我们联系。</p>
+
+                <h2>联系方式</h2>
+                <ul>
+                    <li>📧 邮箱：support@example.com</li>
+                    <li>📞 电话：400-123-4567</li>
+                    <li>🌐 网站：https://example.com</li>
+                </ul>
+
+                <h2>工作时间</h2>
+                <p>周一至周五：9:00 - 18:00</p>
+                <p>节假日除外</p>
+
+                <h2>社交媒体</h2>
+                <ul>
+                    <li>GitHub：<a href="#">github.com/example</a></li>
+                    <li>Twitter：<a href="#">@example</a></li>
+                </ul>
+            </section>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <p>© 2026 文档中心. All rights reserved.</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Scroll to top button -->
+    <button class="scroll-top" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // Toggle sidebar (mobile)
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        function closeSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+        }
+
+        // Toggle navigation section
+        function toggleSection(header) {
+            header.classList.toggle('collapsed');
+            const items = header.nextElementSibling;
+            items.classList.toggle('collapsed');
+        }
+
+        // Show content section
+        function showSection(sectionId, navElement) {
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            if (navElement) {
+                navElement.classList.add('active');
+            }
+
+            // Update content sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                // Scroll to top of content
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Close sidebar on mobile
+            if (window.innerWidth <= 768) {
+                closeSidebar();
+            }
+        }
+
+        // Search functionality
+        function handleSearch(query) {
+            query = query.toLowerCase().trim();
+            
+            if (!query) {
+                // Reset highlights
+                document.querySelectorAll('.highlight').forEach(el => {
+                    el.outerHTML = el.textContent;
+                });
+                return;
+            }
+
+            // Search in all content sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                const sectionId = section.id;
+                const text = section.textContent.toLowerCase();
+                
+                // Check if query matches content
+                if (text.includes(query)) {
+                    console.log(`Found match in section: ${sectionId}`);
+                }
+            });
+
+            // Highlight matching text in current section
+            const activeSection = document.querySelector('.content-section.active');
+            if (activeSection) {
+                highlightText(activeSection, query);
+            }
+        }
+
+        function highlightText(element, query) {
+            // Remove existing highlights
+            document.querySelectorAll('.highlight').forEach(el => {
+                el.outerHTML = el.textContent;
+            });
+
+            if (!query) return;
+
+            const walker = document.createTreeWalker(
+                element, 
+                NodeFilter.SHOW_TEXT, 
+                null, 
+                false
+            );
+
+            const textNodes = [];
+            while(walker.nextNode()) textNodes.push(walker.currentNode);
+
+            textNodes.forEach(node => {
+                const text = node.textContent;
+                const lowerText = text.toLowerCase();
+                const index = lowerText.indexOf(query);
+
+                if (index !== -1) {
+                    const range = document.createRange();
+                    range.setStart(node, index);
+                    range.setEnd(node, index + query.length);
+                    
+                    const mark = document.createElement('span');
+                    mark.className = 'highlight';
+                    range.surroundContents(mark);
+                }
+            });
+        }
+
+        // Scroll to top button
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.querySelector('.scroll-top');
+            if (window.scrollY > 300) {
+                scrollTop.classList.add('show');
+            } else {
+                scrollTop.classList.remove('show');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize - collapse all sections by default except first
+        document.addEventListener('DOMContentLoaded', () => {
+            const navHeaders = document.querySelectorAll('.nav-header');
+            navHeaders.forEach((header, index) => {
+                if (index > 0) {
+                    header.classList.add('collapsed');
+                    header.nextElementSibling.classList.add('collapsed');
+                }
+            });
+
+            // Set first item as active
+            const firstNavItem = document.querySelector('.nav-item');
+            if (firstNavItem) {
+                firstNavItem.classList.add('active');
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + K to focus search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+            
+            // Escape to close sidebar
+            if (e.key === 'Escape') {
+                closeSidebar();
+            }
+        });
+    </script>
+</body>
+</html>
