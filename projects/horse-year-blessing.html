@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐴 2026马年大吉 - 新春祝福</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background: linear-gradient(135deg, #1a0000 0%, #4a0000 50%, #8B0000 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 背景装饰 */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(220, 20, 60, 0.2) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 飘落的花瓣/红包 */
+        .falling-item {
+            position: fixed;
+            top: -50px;
+            font-size: 24px;
+            animation: fall linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* 主容器 */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        /* 标题 */
+        .main-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 4rem;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5)); }
+            to { filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.8)); }
+        }
+
+        .year-text {
+            font-size: 1.5rem;
+            color: #FFD700;
+            margin-bottom: 30px;
+            letter-spacing: 8px;
+        }
+
+        /* 马图标 */
+        .horse-icon {
+            font-size: 6rem;
+            margin: 20px 0;
+            animation: bounce 2s ease infinite;
+            display: inline-block;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* 祝福语卡片 */
+        .blessings {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .blessing-card {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.9), rgba(178, 34, 34, 0.9));
+            border: 2px solid #FFD700;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blessing-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+        }
+
+        .blessing-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            border-color: #FFA500;
+        }
+
+        .blessing-card:hover::before {
+            animation: shine 0.5s ease-in-out;
+        }
+
+        @keyframes shine {
+            to {
+                transform: translate(50%, 50%) rotate(45deg);
+            }
+        }
+
+        .blessing-card h3 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: #FFD700;
+            margin-bottom: 10px;
+        }
+
+        .blessing-card p {
+            font-size: 0.95rem;
+            color: #FFE4B5;
+            line-height: 1.6;
+        }
+
+        /* 主祝福语 */
+        .main-blessing {
+            background: linear-gradient(135deg, rgba(218, 165, 32, 0.2), rgba(184, 134, 11, 0.2));
+            border: 3px solid #FFD700;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .main-blessing::before,
+        .main-blessing::after {
+            content: '🧧';
+            position: absolute;
+            font-size: 2rem;
+            top: -20px;
+        }
+
+        .main-blessing::before { left: 20px; }
+        .main-blessing::after { right: 20px; }
+
+        .main-blessing h2 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.5rem;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+
+        .main-blessing p {
+            font-size: 1.2rem;
+            color: #FFE4B5;
+            line-height: 2;
+        }
+
+        /* 按钮 */
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-family: 'Noto Serif SC', serif;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #8B0000;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #FFD700;
+            border: 2px solid #FFD700;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 215, 0, 0.1);
+            transform: scale(1.05);
+        }
+
+        /* 烟花效果 */
+        .firework {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        @keyframes explode {
+            to {
+                transform: var(--transform);
+                opacity: 0;
+            }
+        }
+
+        /* 页脚 */
+        .footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+            color: #CD853F;
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: #FFD700;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+
+            .horse-icon {
+                font-size: 4rem;
+            }
+
+            .main-blessing h2 {
+                font-size: 1.8rem;
+            }
+
+            .blessings {
+                grid-template-columns: 1fr;
+            }
+
+            .btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+        }
+
+        /* 提示框 */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(139, 0, 0, 0.95);
+            color: #FFD700;
+            padding: 15px 30px;
+            border-radius: 10px;
+            border: 2px solid #FFD700;
+            font-size: 1.1rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    
+    <div class="container">
+        <h1 class="main-title">🐴 马年大吉 🐴</h1>
+        <p class="year-text">二零二六 · 丙午马年</p>
+        
+        <div class="horse-icon">🐎</div>
+
+        <div class="main-blessing">
+            <h2>新春祝福</h2>
+            <p>
+                马蹄声声辞旧岁，春风得意迎新年。<br>
+                愿你在新的一年里：<br>
+                事业如骏马奔腾，生活似春风拂面！
+            </p>
+        </div>
+
+        <div class="blessings">
+            <div class="blessing-card" onclick="copyBlessing(this)">
+                <h3>🐎 马到成功</h3>
+                <p>愿你事业一帆风顺，目标达成，前程似锦！</p>
+            </div>
+            <div class="blessing-card" onclick="copyBlessing(this)">
+                <h3>🐉 龙马精神</h3>
+                <p>愿你精力充沛，身体健康，活力满满！</p>
+            </div>
+            <div class="blessing-card" onclick="copyBlessing(this)">
+                <h3>💰 一马当先</h3>
+                <p>愿你财源广进，投资顺利，财运亨通！</p>
+            </div>
+            <div class="blessing-card" onclick="copyBlessing(this)">
+                <h3>🏠 快马加鞭</h3>
+                <p>愿你家庭和睦，幸福美满，万事如意！</p>
+            </div>
+            <div class="blessing-card" onclick="copyBlessing(this)">
+                <h3>🎓 老马识途</h3>
+                <p>愿你智慧增长，学业进步，前程万里！</p>
+            </div>
+            <div class="blessing-card" onclick="copyBlessing(this)">
+                <h3>🌟 天马行空</h3>
+                <p>愿你梦想成真，创意无限，自由翱翔！</p>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="playFirework()">
+                <span>🎆</span> 放烟花
+            </button>
+            <button class="btn btn-secondary" onclick="shareBlessing()">
+                <span>📤</span> 分享祝福
+            </button>
+        </div>
+
+        <div class="footer">
+            <p>由 OpenClaw 开发 | <a href="../index.html">← 返回导航页</a></p>
+            <p style="margin-top: 10px; font-size: 0.8rem;">🧧 点击卡片可复制祝福语 🧧</p>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // 创建飘落的花瓣/红包
+        function createFallingItem() {
+            const items = ['🧧', '🌸', '🏮', '✨', '🎊'];
+            const item = document.createElement('div');
+            item.className = 'falling-item';
+            item.textContent = items[Math.floor(Math.random() * items.length)];
+            item.style.left = Math.random() * 100 + 'vw';
+            item.style.animationDuration = (Math.random() * 3 + 5) + 's';
+            item.style.opacity = Math.random() * 0.5 + 0.3;
+            document.body.appendChild(item);
+
+            setTimeout(() => item.remove(), 8000);
+        }
+
+        // 定时创建飘落物
+        setInterval(createFallingItem, 500);
+
+        // 初始创建一些
+        for (let i = 0; i < 10; i++) {
+            setTimeout(createFallingItem, i * 200);
+        }
+
+        // 烟花效果
+        function playFirework() {
+            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8'];
+            
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createFirework(
+                        Math.random() * window.innerWidth,
+                        Math.random() * window.innerHeight * 0.5 + 100
+                    );
+                }, i * 300);
+            }
+
+            showToast('🎆 新年快乐！马年大吉！🎆');
+        }
+
+        function createFirework(x, y) {
+            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F'];
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                const angle = (i / particleCount) * 360;
+                const velocity = 100 + Math.random() * 100;
+                const transform = `rotate(${angle}deg) translate(${velocity}px)`;
+                particle.style.setProperty('--transform', transform);
+                particle.style.animation = 'explode 1s ease-out forwards';
+                
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 1000);
+            }
+        }
+
+        // 复制祝福语
+        function copyBlessing(card) {
+            const title = card.querySelector('h3').textContent;
+            const text = card.querySelector('p').textContent;
+            const fullText = `${title}\n${text}`;
+            
+            navigator.clipboard.writeText(fullText).then(() => {
+                showToast('✅ 祝福语已复制！');
+                card.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    card.style.transform = '';
+                }, 200);
+            });
+        }
+
+        // 分享功能
+        function shareBlessing() {
+            const text = '2026马年大吉！祝你马到成功，龙马精神！🐴🧧';
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: '马年祝福',
+                    text: text,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(text + ' ' + window.location.href);
+                showToast('✅ 祝福已复制，快去分享吧！');
+            }
+        }
+
+        // 显示提示
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // 页面加载动画
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.blessing-card').forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // 自动放一次烟花
+            setTimeout(playFirework, 1000);
+        });
+    </script>
+</body>
+</html>
