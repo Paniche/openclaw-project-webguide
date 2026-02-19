@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电子元器件知识库 - 硬件工程师必备</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --bg: #f8f9fa;
+            --card: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #ecf0f1;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 15px;
+        }
+        
+        /* 头部 */
+        .header {
+            background: linear-gradient(135deg, var(--primary), #34495e);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        /* 导航 */
+        .nav-tabs {
+            display: flex;
+            overflow-x: auto;
+            background: white;
+            padding: 12px 16px;
+            gap: 8px;
+            border-bottom: 1px solid var(--border);
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        
+        .nav-tabs::-webkit-scrollbar { display: none; }
+        
+        .nav-tab {
+            flex-shrink: 0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            background: var(--bg);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .nav-tab.active {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        /* 内容 */
+        .content {
+            padding: 16px;
+            max-width: 100%;
+        }
+        
+        .section {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 卡片 */
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .card-subtitle {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 16px 0 10px;
+        }
+        
+        /* 元件类型卡片 */
+        .component-grid {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .component-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 16px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .component-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: var(--secondary);
+        }
+        
+        .component-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        /* 表格 */
+        .table-container {
+            overflow-x: auto;
+            margin: 12px 0;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 600px;
+        }
+        
+        th {
+            background: var(--secondary);
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:nth-child(even) {
+            background: rgba(52, 152, 219, 0.05);
+        }
+        
+        /* 等级标签 */
+        .grade-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 2px;
+        }
+        
+        .grade-consumer {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+        }
+        
+        .grade-industrial {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--secondary);
+        }
+        
+        .grade-automotive {
+            background: rgba(243, 156, 18, 0.1);
+            color: var(--warning);
+        }
+        
+        .grade-military {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--accent);
+        }
+        
+        /* 流程步骤 */
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        
+        .flow-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 16px;
+            top: 32px;
+            width: 2px;
+            height: calc(100% + 8px);
+            background: var(--border);
+        }
+        
+        .flow-number {
+            width: 34px;
+            height: 34px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            margin-right: 12px;
+        }
+        
+        .flow-content {
+            flex: 1;
+            background: var(--card);
+            border-radius: 10px;
+            padding: 14px;
+        }
+        
+        .flow-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .flow-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        /* 提示框 */
+        .tip-box {
+            background: rgba(52, 152, 219, 0.08);
+            border-left: 4px solid var(--secondary);
+            padding: 14px;
+            border-radius: 0 10px 10px 0;
+            margin: 16px 0;
+        }
+        
+        .tip-title {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 6px;
+        }
+        
+        /* 警告框 */
+        .warning-box {
+            background: rgba(231, 76, 60, 0.08);
+            border-left: 4px solid var(--accent);
+            padding: 14px;
+            border-radius: 0 10px 10px 0;
+            margin: 16px 0;
+        }
+        
+        .warning-title {
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+        
+        /* 公式 */
+        .formula {
+            background: #f4f4f4;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            margin: 12px 0;
+            font-size: 0.95rem;
+        }
+        
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 100;
+        }
+        
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4px 10px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.7rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        
+        .nav-btn.active {
+            color: var(--secondary);
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            margin-bottom: 2px;
+        }
+        
+        /* 内容底部留白 */
+        .content-padding {
+            height: 80px;
+        }
+        
+        /* 列表 */
+        ul, ol {
+            margin: 10px 0 10px 20px;
+        }
+        
+        li {
+            margin-bottom: 6px;
+        }
+        
+        /* 参数高亮 */
+        .param {
+            background: rgba(52, 152, 219, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header class="header">
+        <h1>🔌 电子元器件知识库</h1>
+        <p>硬件工程师必备参考手册</p>
+    </header>
+    
+    <!-- 导航 -->
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showSection('classification')">📦 分类</button>
+        <button class="nav-tab" onclick="showSection('principle')">⚡ 原理</button>
+        <button class="nav-tab" onclick="showSection('structure')">🔧 结构</button>
+        <button class="nav-tab" onclick="showSection('manufacturing')">🏭 制造</button>
+        <button class="nav-tab" onclick="showSection('standards')">📋 标准</button>
+        <button class="nav-tab" onclick="showSection('quality')">✅ 质量</button>
+    </div>
+    
+    <!-- 内容 -->
+    <div class="content">
+        <!-- 1. 元器件分类 -->
+        <div id="classification" class="section active">
+            <div class="card">
+                <div class="card-title">📦 元器件概览</div>
+                <p style="margin-bottom: 16px;">电子元器件是构成电子电路的基本单元，主要分为<strong>被动元件</strong>和<strong>主动元件</strong>两大类。</p>
+                
+                <div class="component-grid">
+                    <div class="component-card">
+                        <div class="component-name">🔌 被动元件</div>
+                        <div class="component-desc">
+                            不需要外部电源即可工作，不具备放大、振荡等主动功能。
+                            <ul style="margin-top: 8px;">
+                                <li>电阻器（Resistor）</li>
+                                <li>电容器（Capacitor）</li>
+                                <li>电感器（Inductor）</li>
+                                <li>变压器（Transformer）</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="component-card">
+                        <div class="component-name">⚡ 主动元件</div>
+                        <div class="component-desc">
+                            需要外部电源才能工作，具有放大、开关等主动功能。
+                            <ul style="margin-top: 8px;">
+                                <li>二极管（Diode）</li>
+                                <li>三极管（Transistor）</li>
+                                <li>场效应管（MOSFET）</li>
+                                <li>集成电路（IC）</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">🔧 电阻器分类</div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>分类方式</th>
+                                <th>类型</th>
+                                <th>特点</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="7"><strong>按材料</strong></td>
+                                <td>碳膜电阻</td>
+                                <td>成本低，精度一般（±5%），噪声较大</td>
+                            </tr>
+                            <tr>
+                                <td>金属膜电阻</td>
+                                <td>精度高（±0.1%~±2%），稳定性好，温度系数小</td>
+                            </tr>
+                            <tr>
+                                <td>金属氧化膜电阻</td>
+                                <td>耐高温，功率大，稳定性好</td>
+                            </tr>
+                            <tr>
+                                <td>线绕电阻</td>
+                                <td>功率大（可达数百瓦），精度高，电感较大</td>
+                            </tr>
+                            <tr>
+                                <td>水泥电阻</td>
+                                <td>功率大，耐浪涌，用于大功率场合</td>
+                            </tr>
+                            <tr>
+                                <td>厚膜电阻</td>
+                                <td>用于SMD封装，成本低</td>
+                            </tr>
+                            <tr>
+                                <td>薄膜电阻</td>
+                                <td>高精度，用于精密电路</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">⚡ 电容器分类</div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>特点</th>
+                                <th>典型应用</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>陶瓷电容(MLCC)</td>
+                                <td>体积小，容量范围宽，高频特性好</td>
+                                <td>去耦、滤波、谐振</td>
+                            </tr>
+                            <tr>
+                                <td>铝电解电容</td>
+                                <td>容量大，有极性，ESR较高</td>
+                                <td>电源滤波、储能</td>
+                            </tr>
+                            <tr>
+                                <td>钽电解电容</td>
+                                <td>容量大，体积小，稳定性好</td>
+                                <td>精密电源、音频</td>
+                            </tr>
+                            <tr>
+                                <td>薄膜电容</td>
+                                <td>精度高，损耗小，自愈性好</td>
+                                <td>滤波、耦合、谐振</td>
+                            </tr>
+                            <tr>
+                                <td>超级电容</td>
+                                <td>超大容量，功率密度高</td>
+                                <td>储能、后备电源</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="tip-box">
+                    <div class="tip-title">💡 陶瓷电容温度特性</div>
+                    <div style="font-size: 0.9rem;">
+                        <strong>Class 1 (NP0/C0G):</strong> 温度补偿型，稳定性极好，容量小<br>
+                        <strong>Class 2 (X7R):</strong> 温度稳定型，容量中等<br>
+                        <strong>Class 3 (Y5V):</strong> 通用型，容量大，温度特性差
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">🔌 二极管类型</div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>正向压降</th>
+                                <th>特点</th>
+                                <th>典型应用</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>普通整流二极管</td>
+                                <td>0.7V</td>
+                                <td>通用整流</td>
+                                <td>AC-DC转换</td>
+                            </tr>
+                            <tr>
+                                <td>快恢复二极管(FRD)</td>
+                                <td>0.7V</td>
+                                <td>反向恢复时间快(<50ns)</td>
+                                <td>高频整流、开关电源</td>
+                            </tr>
+                            <tr>
+                                <td>肖特基二极管</td>
+                                <td>0.3-0.5V</td>
+                                <td>低压降，高速</td>
+                                <td>低压整流、续流</td>
+                            </tr>
+                            <tr>
+                                <td>稳压二极管(齐纳)</td>
+                                <td>-</td>
+                                <td>反向击穿稳压</td>
+                                <td>电压基准、过压保护</td>
+                            </tr>
+                            <tr>
+                                <td>发光二极管(LED)</td>
+                                <td>1.8-3.3V</td>
+                                <td>电光转换</td>
+                                <td>指示灯、照明、显示</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 2. 工作原理 -->
+        <div id="principle" class="section">
+            <div class="card">
+                <div class="card-title">⚡ 欧姆定律</div>
+                
+                <div class="formula">
+                    V = I × R
+                </div>
+                
+                <p>其中：V为电压(V)，I为电流(A)，R为电阻(Ω)</p>
+                
+                <div class="tip-box">
+                    <div class="tip-title">💡 电阻串联与并联</div>
+                    <div style="font-size: 0.9rem;">
+                        <strong>串联:</strong> R总 = R1 + R2 + R3 + ...<br>
+                        <strong>并联:</strong> 1/R总 = 1/R1 + 1/R2 + 1/R3 + ...
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">🔋 电容充放电原理</div>
+                
+                <div class="formula">
+                    τ = R × C
+                </div>
+                
+                <p>时间常数τ：电容充电至63.2%所需时间</p>
+                
+                <div class="card-subtitle">容抗计算</div>
+                
+                <div class="formula">
+                    Xc = 1 / (2πfC)
+                </div>
+                
+                <p style="font-size: 0.9rem; color: var(--text-light);">
+                    f: 频率(Hz)，C: 容值(F)，Xc: 容抗(Ω)
+                </p>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">🧲 电感电磁感应</div>
+                
+                <div class="formula">
+                    V = L × (di/dt)
+                </div>
+                
+                <p>感抗与频率成正比：</p>
+                
+                <div class="formula">
+                    XL = 2πfL
+                </div>
+                
+                <div class="tip-box">
+                    <div class="tip-title">💡 LC谐振频率</div>
+                    <div class="formula" style="margin: 8px 0;">
+                        f = 1 / (2π√(LC))
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">🔌 PN结原理</div>
+                
+                <p style="margin-bottom: 12px;">PN结是半导体器件的基础结构，由P型半导体和N型半导体结合形成。</p>
+                
+                <div class="card-subtitle">正向偏置</div>
+                <p style="font-size: 0.9rem; margin-bottom: 12px;">P区接正，N区接负。当电压超过阈值（硅约0.7V），大量载流子扩散形成电流。</p>
+                
+                <div class="card-subtitle">反向偏置</div>
+                <p style="font-size: 0.9rem;">P区接负，N区接正。耗尽层变宽，仅有极小漏电流。超过击穿电压后电流急剧增加。</p>
+            </div>
+        </div>
+        
+        <!-- 3. 组成与结构 -->
+        <div id="structure" class="section">
+            <div class="card">
+                <div class="card-title">📦 封装类型</div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>封装类型</th>
+                                <th>引脚数</th>
+                                <th>特点</th>
+                                <th>应用</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SMD 0402</td>
+                                <td>2</td>
+                                <td>1.0×0.5mm，最小封装</td>
+                                <td>高密度PCB</td>
+                            </tr>
+                            <tr>
+                                <td>SMD 0603</td>
+                                <td>2</td>
+                                <td>1.6×0.8mm，常用</td>
+                                <td>通用</td>
+                            </tr>
+                            <tr>
+                                <td>SMD 0805</td>
+                                <td>2</td>
+                                <td>2.0×1.25mm，易焊接</td>
+                                <td>手工焊接</td>
+                            </tr>
+                            <tr>
+                                <td>DIP</td>
+                                <td>多变</td>
+                                <td>直插，易手工焊接</td>
+                                <td>原型开发</td>
+                            </tr>
+                            <tr>
+                                <td>QFN</td>
+                                <td>多变</td>
+                                <td>无引脚，散热好</td>
+                                <td>功率IC</td>
+                            </tr>
+                            <tr>
+                                <td>BGA</td>
+                                <td>多变</td>
+                                <td>球栅阵列，高密度</td>
+                                <td>处理器、FPGA</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 4. 制造流程 -->
+        <div id="manufacturing" class="section">
+            <div class="card">
+                <div class="card-title">🏭 IC制造流程</div>
+                
+                <div class="flow-step">
+                    <div class="flow-number">1</div>
+                    <div class="flow-content">
+                        <div class="flow-title">晶圆制备</div>
+                        <div class="flow-desc">高纯度硅单晶生长 → 切割成薄片 → 抛光</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="flow-number">2</div>
+                    <div class="flow-content">
+                        <div class="flow-title">氧化</div>
+                        <div class="flow-desc">晶圆表面生长二氧化硅绝缘层</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="flow-number">3</div>
+                    <div class="flow-content">
+                        <div class="flow-title">光刻</div>
+                        <div class="flow-desc">涂光刻胶 → 曝光 → 显影 → 图形转移</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="flow-number">4</div>
+                    <div class="flow-content">
+                        <div class="flow-title">刻蚀</div>
+                        <div class="flow-desc">去除未被光刻胶保护的氧化层</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="flow-number">5</div>
+                    <div class="flow-content">
+                        <div class="flow-title">离子注入</div>
+                        <div class="flow-desc">注入掺杂原子形成PN结</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="flow-number">6</div>
+                    <div class="flow-content">
+                        <div class="flow-title">金属化</div>
+                        <div class="flow-desc">沉积金属层形成电极和连线</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="flow-number">7</div>
+                    <div class="flow-content">
+                        <div class="flow-title">封装</div>
+                        <div class="flow-desc">切割 → 贴片 → 键合 → 塑封 → 测试</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 5. 执行标准 -->
+        <div id="standards" class="section">
+            <div class="card">
+                <div class="card-title">📋 国际标准体系</div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>标准组织</th>
+                                <th>适用范围</th>
+                                <th>主要内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>IEC</td>
+                                <td>国际电工委员会</td>
+                                <td>电子元器件基础标准</td>
+                            </tr>
+                            <tr>
+                                <td>MIL</td>
+                                <td>美国军用标准</td>
+                                <td>军用元器件可靠性</td>
+                            </tr>
+                            <tr>
+                                <td>JIS</td>
+                                <td>日本工业标准</td>
+                                <td>日本电子元器件标准</td>
+                            </tr>
+                            <tr>
+                                <td>IPC</td>
+                                <td>国际电子工业联接协会</td>
+                                <td>PCB设计和制造标准</td>
+                            </tr>
+                            <tr>
+                                <td>AEC</td>
+                                <td>汽车电子委员会</td>
+                                <td>汽车电子元器件标准</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">🇨🇳 中国标准</div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>标准代号</th>
+                                <th>名称</th>
+                                <th>说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>GB/T</td>
+                                <td>国家推荐性标准</td>
+                                <td>民用电子元器件</td>
+                            </tr>
+                            <tr>
+                                <td>GJB</td>
+                                <td>国家军用标准</td>
+                                <td>军用电子元器件</td>
+                            </tr>
+                            <tr>
+                                <td>SJ/T</td>
+                                <td>电子行业标准</td>
+                                <td>电子工业行业标准</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 6. 质量保证等级 -->
+        <div id="quality" class="section">
+            <div class="card">
+                <div class="card-title">✅ 质量等级分类</div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>等级</th>
+                                <th>温度范围</th>
+                                <th>失效率</th>
+                                <th>典型应用</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="grade-tag grade-consumer">民用级</span></td>
+                                <td>0°C ~ +70°C</td>
+                                <td>较高</td>
+                                <td>消费电子、玩具</td>
+                            </tr>
+                            <tr>
+                                <td><span class="grade-tag grade-industrial">工业级</span></td>
+                                <td>-40°C ~ +85°C</td>
+                                <td>中等</td>
+                                <td>工业控制、仪表</td>
+                            </tr>
+                            <tr>
+                                <td><span class="grade-tag grade-automotive">汽车级</span></td>
+                                <td>-40°C ~ +125°C</td>
+                                <td>低</td>
+                                <td>汽车电子、AEC-Q100</td>
+                            </tr>
+                            <tr>
+                                <td><span class="grade-tag grade-military">军品级</span></td>
+                                <td>-55°C ~ +125°C</td>
+                                <td>极低</td>
+                                <td>航空航天、军工</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="warning-box">
+                    <div class="warning-title">⚠️ 降额设计</div>
+                    <div style="font-size: 0.9rem;">
+                        为提高可靠性，实际使用应力应低于额定值：<br>
+                        • 电阻：功率降额至50%-70%<br>
+                        • 电容：电压降额至50%-80%<br>
+                        • 半导体：电流/电压降额至70%
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">📊 可靠性计算</div>
+                
+                <div class="formula">
+                    λ = λb × πE × πQ × πA × ...
+                </div>
+                
+                <p style="font-size: 0.9rem; margin-top: 12px;">
+                    λb: 基础失效率 | πE: 环境系数 | πQ: 质量系数 | πA: 应用系数
+                </p>
+                
+                <div class="tip-box">
+                    <div class="tip-title">💡 阿伦尼乌斯模型</div>
+                    <div class="formula" style="margin: 8px 0;">
+                        λ2 = λ1 × exp[(Ea/k) × (1/T2 - 1/T1)]
+                    </div>
+                    <p style="font-size: 0.85rem;">
+                        Ea: 激活能 | k: 玻尔兹曼常数 | T: 绝对温度(K)
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-padding"></div>
+    </div>
+    
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" onclick="showSection('classification')">
+            <span class="nav-icon">📦</span>
+            <span>分类</span>
+        </button>
+        <button class="nav-btn" onclick="showSection('principle')">
+            <span class="nav-icon">⚡</span>
+            <span>原理</span>
+        </button>
+        <button class="nav-btn" onclick="showSection('structure')">
+            <span class="nav-icon">🔧</span>
+            <span>结构</span>
+        </button>
+        <button class="nav-btn" onclick="showSection('manufacturing')">
+            <span class="nav-icon">🏭</span>
+            <span>制造</span>
+        </button>
+        <button class="nav-btn" onclick="showSection('standards')">
+            <span class="nav-icon">📋</span>
+            <span>标准</span>
+        </button>
+        <button class="nav-btn" onclick="showSection('quality')">
+            <span class="nav-icon">✅</span>
+            <span>质量</span>
+        </button>
+    </nav>
+    
+    <script>
+        function showSection(id) {
+            // 隐藏所有section
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            // 显示目标section
+            document.getElementById(id).classList.add('active');
+            
+            // 更新导航
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            const index = ['classification', 'principle', 'structure', 'manufacturing', 'standards', 'quality'].indexOf(id);
+            if (index >= 0) {
+                document.querySelectorAll('.nav-tab')[index].classList.add('active');
+                document.querySelectorAll('.nav-btn')[index].classList.add('active');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
