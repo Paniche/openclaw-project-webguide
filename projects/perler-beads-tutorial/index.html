@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>拼豆熨烫完全教程</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --pink: #ff6b9d;
+            --pink-light: #ffc1d6;
+            --purple: #9b59b6;
+            --blue: #3498db;
+            --green: #2ecc71;
+            --orange: #f39c12;
+            --red: #e74c3c;
+            --yellow: #f1c40f;
+            --bg: #fff5f7;
+            --card: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 16px;
+            padding-bottom: 80px;
+        }
+        
+        /* 头部 */
+        .header {
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+        }
+        
+        .header-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.95;
+        }
+        
+        /* 导航 */
+        .nav-tabs {
+            display: flex;
+            overflow-x: auto;
+            background: white;
+            padding: 12px 16px;
+            gap: 8px;
+            border-bottom: 1px solid #eee;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .nav-tabs::-webkit-scrollbar { display: none; }
+        
+        .nav-tab {
+            flex-shrink: 0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            background: var(--bg);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .nav-tab.active {
+            background: var(--pink);
+            color: white;
+        }
+        
+        /* 内容 */
+        .content {
+            padding: 16px;
+            max-width: 100%;
+        }
+        
+        .section {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 卡片 */
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card-text {
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.8;
+        }
+        
+        /* 步骤卡片 */
+        .step-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .step-card::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 60px;
+            height: 60px;
+            background: var(--pink-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--pink);
+        }
+        
+        .step-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--pink);
+            padding-right: 50px;
+        }
+        
+        .step-content {
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+        
+        .step-tips {
+            background: rgba(255, 107, 157, 0.1);
+            border-left: 4px solid var(--pink);
+            padding: 12px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 12px;
+            font-size: 0.9rem;
+        }
+        
+        .step-tips-title {
+            font-weight: 600;
+            color: var(--pink);
+            margin-bottom: 4px;
+        }
+        
+        /* 工具网格 */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .tool-item {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .tool-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .tool-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+        
+        .tool-desc {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+        
+        /* 温度指示器 */
+        .temp-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(90deg, #3498db, #f39c12, #e74c3c);
+            border-radius: 12px;
+            padding: 16px;
+            color: white;
+            margin: 16px 0;
+        }
+        
+        .temp-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .temp-info {
+            flex: 1;
+        }
+        
+        .temp-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        .temp-status {
+            font-weight: 600;
+        }
+        
+        /* 时间指示器 */
+        .time-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+            border: 3px solid var(--pink-light);
+        }
+        
+        .time-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--pink);
+        }
+        
+        .time-label {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+        
+        /* 常见问题 */
+        .faq-item {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--orange);
+        }
+        
+        .faq-question {
+            font-weight: 600;
+            color: var(--orange);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .faq-answer {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+        
+        /* 警告框 */
+        .warning-box {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--red);
+            padding: 16px;
+            border-radius: 0 12px 12px 0;
+            margin: 16px 0;
+        }
+        
+        .warning-title {
+            font-weight: 600;
+            color: var(--red);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* 成功提示 */
+        .success-box {
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--green);
+            padding: 16px;
+            border-radius: 0 12px 12px 0;
+            margin: 16px 0;
+        }
+        
+        .success-title {
+            font-weight: 600;
+            color: var(--green);
+            margin-bottom: 8px;
+        }
+        
+        /* 图案展示 */
+        .pattern-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .pattern-item {
+            aspect-ratio: 1;
+            background: var(--bg);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        /* 进度条 */
+        .progress-bar {
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--pink), var(--purple));
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+        
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 100;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4px 12px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.7rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .nav-btn.active {
+            color: var(--pink);
+        }
+        
+        .nav-icon {
+            font-size: 1.4rem;
+            margin-bottom: 2px;
+        }
+        
+        /* 检查清单 */
+        .checklist {
+            list-style: none;
+        }
+        
+        .checklist li {
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+        
+        .checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--pink);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--pink);
+            font-size: 0.8rem;
+        }
+        
+        /* 技巧标签 */
+        .tips-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .tip-tag {
+            background: rgba(155, 89, 182, 0.1);
+            color: var(--purple);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header class="header">
+        <div class="header-icon">🎨</div>
+        <h1>拼豆熨烫完全教程</h1>
+        <p>从零开始，打造专属像素艺术</p>
+    </header>
+    
+    <!-- 导航 -->
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showSection('intro')">🛠️ 准备</button>
+        <button class="nav-tab" onclick="showSection('design')">✏️ 设计</button>
+        <button class="nav-tab" onclick="showSection('iron')">🔥 熨烫</button>
+        <button class="nav-tab" onclick="showSection('cool')">❄️ 冷却</button>
+        <button class="nav-tab" onclick="showSection('faq')">❓ 问题</button>
+    </div>
+    
+    <!-- 内容 -->
+    <div class="content">
+        <!-- 准备阶段 -->
+        <div id="intro" class="section active">
+            <div class="card">
+                <div class="card-title">🎨 什么是拼豆？</div>
+                <div class="card-text">
+                    拼豆（Perler Beads）是一种<strong>5mm的塑料小珠子</strong>，通过在钉板上摆出图案，再用熨斗加热使其表面融化粘合，冷却后形成坚固的像素艺术品。适合制作钥匙扣、冰箱贴、胸针等可爱小物！
+                </div>            </div>
+            
+            <div class="card">
+                <div class="card-title">🛠️ 必备工具清单</div>                
+                <div class="tools-grid">
+                    <div class="tool-item">
+                        <div class="tool-icon">🔴</div>
+                        <div class="tool-name">拼豆</div>
+                        <div class="tool-desc">5mm标准尺寸</div>
+                    </div>
+                    <div class="tool-item">
+                        <div class="tool-icon">⬜</div>
+                        <div class="tool-name">钉板</div>
+                        <div class="tool-desc">透明/彩色均可</div>
+                    </div>
+                    
+                    <div class="tool-item">
+                        <div class="tool-icon">🔥</div>
+                        <div class="tool-name">熨斗</div>
+                        <div class="tool-desc">家用蒸汽熨斗</div>
+                    </div>
+                    
+                    <div class="tool-item">
+                        <div class="tool-icon">📄</div>
+                        <div class="tool-name">烘焙纸</div>
+                        <div class="tool-desc">隔离保护必备</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <div class="warning-title">⚠️ 安全提醒</div>
+                <div style="font-size: 0.9rem;">
+                    • 熨斗高温危险，儿童需在成人监护下操作<br>
+                    • 熨烫时保持通风，塑料加热会产生轻微气味<br>
+                    • 刚熨烫完成的拼豆非常烫，不要立即触摸
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">✅ 开始前的检查</div>
+                <ul class="checklist">
+                    <li><span class="checkbox">✓</span> 熨斗已预热至中高温</li>
+                    <li><span class="checkbox">✓</span> 烘焙纸/熨烫纸已准备好</li>
+                    <li><span class="checkbox">✓</span> 在平整的桌面上操作</li>
+                    <li><span class="checkbox">✓</span> 重物（书本）准备用于冷却定型</li>
+                    <li><span class="checkbox">✓</span> 参考图案已选定</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 设计阶段 -->
+        <div id="design" class="section">
+            <div class="step-card" data-step="1">
+                <div class="step-title">选择或设计图案</div>
+                <div class="step-content">
+                    可以从网上搜索现成的像素图，或使用像素画软件（如Aseprite、Pixilart）自己设计。新手建议从<strong>20×20像素以内</strong>的简单图案开始。
+                </div>
+                
+                <div class="pattern-grid" style="margin-top: 16px;">
+                    <div class="pattern-item">🍄</div>
+                    <div class="pattern-item">⭐</div>
+                    <div class="pattern-item">❤️</div>
+                    <div class="pattern-item">🌸</div>
+                    <div class="pattern-item">🐱</div>
+                    <div class="pattern-item">🎮</div>
+                </div>                
+                
+                <div class="step-tips">
+                    <div class="step-tips-title">💡 新手推荐</div>
+                    爱心、星星、蘑菇、简单卡通角色都是很好的入门图案
+                </div>
+            </div>
+            
+            <div class="step-card" data-step="2">
+                <div class="step-title">在钉板上摆放拼豆</div>
+                
+                <div class="step-content">
+                    按照图案一颗一颗将拼豆插入钉板。注意：
+                    <ul style="margin-top: 8px; padding-left: 20px;">
+                        <li>确保每颗豆子都<strong>插到底</strong>，不要浮起</li>
+                        <li>相邻豆子间留<strong>适当间隙</strong>，不要太挤</li>
+                        <li>大面积图案建议<strong>分段完成</strong></li>
+                    </ul>
+                </div>
+                
+                <div class="step-tips">
+                    <div class="step-tips-title">💡 防呆技巧</div>
+                    摆放时用镊子或手指轻压，确保豆子稳固。完成后用指甲轻扫表面，松动的豆子会发出"咔哒"声。
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">🎯 摆放检查清单</div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%;"></div>
+                </div>
+                
+                <ul class="checklist">
+                    <li onclick="toggleCheck(this)"><span class="checkbox"></span> 所有豆子颜色正确无误</li>
+                    <li onclick="toggleCheck(this)"><span class="checkbox"></span> 每颗豆子都插紧在钉板上</li>
+                    <li onclick="toggleCheck(this)"><span class="checkbox"></span> 图案方向正确（特别是文字）</li>
+                    <li onclick="toggleCheck(this)"><span class="checkbox"></span> 移除多余的豆子</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 熨烫阶段 -->
+        <div id="iron" class="section">
+            <div class="step-card" data-step="3">
+                <div class="step-title">预热熨斗</div>
+                
+                <div class="temp-indicator">
+                    <div class="temp-value">160°</div>
+                    <div class="temp-info">
+                        <div class="temp-label">推荐熨烫温度</div>
+                        <div class="temp-status">中高温档（羊毛/棉麻之间）</div>
+                    </div>
+                </div>
+                
+                <div class="step-content">
+                    将熨斗调至<strong>中高温</strong>（约160°C），关闭蒸汽功能。等待指示灯熄灭，表示已达到设定温度。
+                </div>
+                
+                <div class="step-tips">
+                    <div class="step-tips-title">🔥 温度测试</div>
+                    首次使用某品牌拼豆时，建议先用边角料测试：温度太低粘不住，太高会过度融化变形。
+                </div>
+            </div>
+            
+            <div class="step-card" data-step="4">
+                <div class="step-title">铺上烘焙纸</div>
+                
+                <div class="step-content">
+                    将烘焙纸（或专用熨烫纸）轻轻覆盖在拼豆图案上，确保：
+                    <ul style="margin-top: 8px; padding-left: 20px;">
+                        <li>纸张<strong>完全覆盖</strong>所有拼豆</li>
+                        <li>纸张<strong>平整无褶皱</strong></li>
+                        <li>预留边缘方便拿取</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="step-card" data-step="5">
+                <div class="step-title">开始熨烫！</div>
+                
+                <div class="time-indicator">
+                    <div>
+                        <div class="time-value">10-15</div>
+                        <div class="time-label">秒</div>
+                    </div>
+                    <div style="font-size: 3rem;">⏱️</div>
+                </div>
+                
+                <div class="step-content">
+                    <strong>熨烫手法：</strong>
+                    <ol style="margin-top: 8px; padding-left: 20px;">
+                        <li>熨斗<strong>垂直轻放</strong>在烘焙纸上，不要滑动！</li>
+                        <li>均匀施加<strong>适中压力</strong>（约1-2kg）</li>
+                        <li>保持<strong>10-15秒</strong>不动</li>
+                        <li>观察边缘豆子开始发亮即表示已粘合</li>
+                        <li><strong>轻轻抬起</strong>熨斗，不要拖动</li>
+                    </ol>
+                </div>                
+                
+                <div class="step-tips">
+                    <div class="step-tips-title">👀 观察要点</div>
+                    理想状态：豆子表面微微融化，中心孔仍然可见。如果孔消失了，说明温度过高或时间过长。
+                </div>
+            </div>
+            
+            <div class="step-card" data-step="6">
+                <div class="step-title">翻面熨烫（双面熨）</div>
+                
+                <div class="step-content">
+                    待第一面冷却后，将作品翻面，重复上述步骤熨烫背面。双面熨烫使作品<strong>更加坚固</strong>，不易弯曲变形。
+                </div>
+                
+                <div class="tips-tags">
+                    <span class="tip-tag">单面熨：有颗粒感</span>
+                    <span class="tip-tag">双面熨：平整光滑</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 冷却阶段 -->
+        <div id="cool" class="section">
+            <div class="step-card" data-step="7">
+                <div class="step-title">冷却定型</div>
+                
+                <div class="time-indicator">
+                    <div>
+                        <div class="time-value">2-3</div>
+                        <div class="time-label">分钟</div>
+                    </div>
+                    <div style="font-size: 3rem;">❄️</div>
+                </div>
+                
+                <div class="step-content">
+                    熨烫完成后，在作品上放置<strong>平整的重物</strong>（如厚书本），静置冷却2-3分钟。这样可以让作品保持平整，防止翘曲。
+                </div>
+                
+                <div class="step-tips">
+                    <div class="step-tips-title">⚡ 快速冷却法</div>
+                    急用时可放在平整的桌面上，用手轻压（隔着布）辅助散热，但仍需等待至少1分钟。
+                </div>
+            </div>
+            
+            <div class="success-box">
+                <div class="success-title">🎉 恭喜你！拼豆作品完成！</div>
+                <div style="font-size: 0.95rem;">
+                    现在你可以：<br>
+                    • 装上钥匙扣做成挂件<br>
+                    • 贴上磁铁变成冰箱贴<br>
+                    • 配上别针做成胸针<br>
+                    • 用胶水粘在手机壳上装饰
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">📦 保存与保养</div>
+                
+                <div class="card-text" style="font-size: 0.9rem;">
+                    • <strong>避免高温</strong>：不要长时间放在阳光直射或高温环境下<br>
+                    • <strong>轻柔清洁</strong>：脏了可用湿布轻轻擦拭<br>
+                    • <strong>防摔防撞>/strong>：剧烈撞击可能导致开裂<br>
+                    • <strong>平整存放</strong>：长期不用时平放，避免重压变形
+                </div>
+            </div>
+        </div>
+        
+        <!-- 常见问题 -->
+        <div id="faq" class="section">
+            <div class="faq-item">
+                <div class="faq-question">❓ 拼豆粘不牢，一碰就散</div>
+                <div class="faq-answer">
+                    原因：温度太低或时间不够<br>
+                    解决：提高熨斗温度，延长熨烫时间至15-20秒，确保豆子表面充分融化
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">❓ 拼豆过度融化，图案变形</div>
+                <div class="faq-answer">
+                    原因：温度过高或时间过长<br>
+                    解决：降低温度，缩短时间至8-10秒。已变形作品无法修复，建议重做
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">❓ 作品冷却后翘曲不平</div>
+                <div class="faq-answer">
+                    原因：冷却时未加重物定型，或双面温度不均<br>
+                    解决：重新加热后，趁软时用重物压平冷却。预防：务必双面熨烫并冷却定型
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">❓ 烘焙纸粘在作品上撕不下来</div>
+                <div class="faq-answer">
+                    原因：熨烫时间过长，塑料渗透纸张<br>
+                    解决：小心撕下，残留纸屑可用湿布擦拭。建议：使用专用熨烫纸更耐用
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">❓ 可以重复使用拼豆吗？</div>
+                <div class="faq-answer">
+                    已熨烫的拼豆<strong>不能</strong>重复使用。但摆放错误未熨烫的豆子可以取下重新使用。
+                </div>
+            </div>
+            
+            <div class="card" style="margin-top: 20px;">
+                <div class="card-title">💡 进阶技巧</div>
+                
+                <div class="card-text" style="font-size: 0.9rem;">
+                    <strong>渐变效果：</strong> 相邻颜色交替摆放，熨烫后会产生像素渐变<br><br>
+                    <strong>立体拼豆：</strong> 多层作品用胶水粘合，制作立体玩偶<br><br>
+                    <strong>拼豆画：</strong> 多块钉板拼接，制作大幅像素画<br><br>
+                    <strong>混色技巧：</strong> 相邻两种颜色的豆子融化后会混合出新色彩
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" onclick="showSection('intro')">
+            <span class="nav-icon">🛠️</span>
+            <span>准备</span>
+        </button>
+        <button class="nav-btn" onclick="showSection('design')">
+            <span class="nav-icon">✏️</span>
+            <span>设计</span>
+        </button>
+        <button class="nav-btn" onclick="showSection('iron')">
+            <span class="nav-icon">🔥</span>
+            <span>熨烫</span>
+        </button>
+        <button class="nav-btn" onclick="showSection('cool')">
+            <span class="nav-icon">❄️</span>
+            <span>冷却</span>
+        </button>
+        <button class="nav-btn" onclick="showSection('faq')">
+            <span class="nav-icon">❓</span>
+            <span>问题</span>
+        </button>
+    </nav>
+    
+    <script>
+        function showSection(id) {
+            // 隐藏所有section
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            // 显示目标section
+            document.getElementById(id).classList.add('active');
+            
+            // 更新导航状态
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            const index = ['intro', 'design', 'iron', 'cool', 'faq'].indexOf(id);
+            document.querySelectorAll('.nav-tab')[index].classList.add('active');
+            document.querySelectorAll('.nav-btn')[index].classList.add('active');
+            
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // 检查清单勾选
+        function toggleCheck(item) {
+            const checkbox = item.querySelector('.checkbox');
+            if (checkbox.textContent === '✓') {
+                checkbox.textContent = '';
+                item.style.opacity = '1';
+            } else {
+                checkbox.textContent = '✓';
+                item.style.opacity = '0.6';
+            }
+            updateProgress();
+        }
+        
+        // 更新进度条
+        function updateProgress() {
+            const total = document.querySelectorAll('.checklist li').length;
+            const checked = document.querySelectorAll('.checklist li .checkbox').length;
+            const checkedCount = Array.from(document.querySelectorAll('.checklist li .checkbox')).filter(cb => cb.textContent === '✓').length;
+            const progress = (checkedCount / total) * 100;
+            document.querySelector('.progress-fill').style.width = progress + '%';
+        }
+    </script>
+</body>
+</html>
