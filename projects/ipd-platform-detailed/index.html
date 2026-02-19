@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>IPD硬件研发平台 - 详细方案</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #1976d2;
+            --primary-light: #42a5f5;
+            --primary-dark: #1565c0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #d32f2f;
+            --purple: #7c4dff;
+            --bg: #f8f9fa;
+            --card: #ffffff;
+            --text: #212529;
+            --text-light: #6c757d;
+            --border: #dee2e6;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 16px;
+            padding-bottom: 70px;
+        }
+        
+        /* 头部 */
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 24px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .header-subtitle {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        /* 目录 */
+        .toc {
+            background: white;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .toc::-webkit-scrollbar { display: none; }
+        
+        .toc-item {
+            display: inline-block;
+            padding: 6px 14px;
+            margin-right: 8px;
+            background: var(--bg);
+            border-radius: 16px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .toc-item.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* 内容区 */
+        .content {
+            padding: 16px;
+            max-width: 100%;
+        }
+        
+        .section {
+            margin-bottom: 24px;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+        
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background: var(--primary);
+            margin-right: 10px;
+            vertical-align: middle;
+            border-radius: 2px;
+        }
+        
+        .subsection-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 20px 0 12px;
+        }
+        
+        /* 卡片 */
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+        
+        .card-text {
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.8;
+        }
+        
+        /* 痛点卡片 */
+        .pain-grid {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .pain-card {
+            background: linear-gradient(135deg, #fff5f5, #ffffff);
+            border-left: 4px solid var(--danger);
+            border-radius: 0 10px 10px 0;
+            padding: 16px;
+        }
+        
+        .pain-title {
+            font-weight: 600;
+            color: var(--danger);
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+        }
+        
+        .pain-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        /* 模块网格 */
+        .module-grid {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .module-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 16px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .module-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+        
+        .module-features {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        .module-features li {
+            margin-bottom: 4px;
+            list-style: none;
+            padding-left: 16px;
+            position: relative;
+        }
+        
+        .module-features li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        /* 原型展示 */
+        .prototype-box {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 10px;
+            padding: 16px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+        
+        .prototype-box .hl { color: #4fc3f7; }
+        .prototype-box .warn { color: #ffcc80; }
+        .prototype-box .success { color: #81c784; }
+        
+        /* 流程步骤 */
+        .flow-list {
+            counter-reset: step;
+        }
+        
+        .flow-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        
+        .flow-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 16px;
+            top: 32px;
+            width: 2px;
+            height: calc(100% + 8px);
+            background: var(--border);
+        }
+        
+        .flow-num {
+            width: 34px;
+            height: 34px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            margin-right: 12px;
+        }
+        
+        .flow-content {
+            flex: 1;
+            background: var(--card);
+            border-radius: 10px;
+            padding: 14px;
+        }
+        
+        .flow-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .flow-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        /* 技术选型表格 */
+        .tech-list {
+            background: var(--card);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .tech-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .tech-item:last-child {
+            border-bottom: none;
+        }
+        
+        .tech-name {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .tech-value {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-align: right;
+        }
+        
+        /* 时间线 */
+        .timeline-item {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--success);
+        }
+        
+        .timeline-phase {
+            font-size: 0.8rem;
+            color: var(--success);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        
+        .timeline-content {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        /* 提示框 */
+        .tip-box {
+            background: rgba(25, 118, 210, 0.08);
+            border-left: 4px solid var(--primary);
+            padding: 16px;
+            border-radius: 0 10px 10px 0;
+            margin: 16px 0;
+        }
+        
+        .tip-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        /* 标签 */
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .tag {
+            background: rgba(25, 118, 210, 0.1);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+        }
+        
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 100;
+        }
+        
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4px 12px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.7rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        
+        .nav-btn.active {
+            color: var(--primary);
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            margin-bottom: 2px;
+        }
+        
+        /* 展开/收起 */
+        .expandable {
+            margin-top: 12px;
+        }
+        
+        .expand-btn {
+            color: var(--primary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 0;
+        }
+        
+        .expand-content {
+            display: none;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            margin-top: 12px;
+        }
+        
+        .expand-content.show {
+            display: block;
+        }
+        
+        /* 资源统计 */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .resource-item {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .resource-num {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .resource-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header class="header">
+        <div class="header-title">📋 IPD硬件研发平台详细方案</div>
+        <div class="header-subtitle">集成产品开发数字化解决方案</div>
+    </header>
+    
+    <!-- 目录 -->
+    <nav class="toc">
+        <a href="#sec1" class="toc-item active" onclick="scrollToSection('sec1')">需求</a>
+        <a href="#sec2" class="toc-item" onclick="scrollToSection('sec2')">架构</a>
+        <a href="#sec3" class="toc-item" onclick="scrollToSection('sec3')">模块设计</a>
+        <a href="#sec4" class="toc-item" onclick="scrollToSection('sec4')">流程</a>
+        <a href="#sec5" class="toc-item" onclick="scrollToSection('sec5')">技术</a>
+        <a href="#sec6" class="toc-item" onclick="scrollToSection('sec6')">实施</a>
+    </nav>
+    
+    <!-- 内容 -->
+    <div class="content">
+        <!-- 第1部分：需求理解 -->
+        <section class="section" id="sec1">
+            <div class="section-title">1. 核心需求理解</div>
+            
+            <div class="pain-grid">
+                <div class="pain-card">
+                    <div class="pain-title">📢 流程落地难</div>
+                    <div class="pain-desc">IPD文档很好，但执行靠吼，进度靠问，缺乏数字化工具支撑</div>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-title">🔍 信息孤岛</div>
+                    <div class="pain-desc">项目状态不透明，领导不知道卡在哪，跨部门协作困难</div>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-title">💨 经验流失</div>
+                    <div class="pain-desc">做完项目知识没沉淀，新人重复踩坑，无法复用已有成果</div>
+                </div>
+                <div class="pain-card"
+>
+                    <div class="pain-title">🔄 复用困难</div>
+                    <div class="pain-desc">做好的模块找不到，重复开发，资源浪费</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">🎯 平台定位</div>
+                <div class="card-text">
+                    <strong>IPD流程的数字化执行系统</strong><br><br>
+                    不是"参考"IPD，而是"固化"IPD：<br>
+                    • 项目创建 = 流程实例化<br>
+                    • 流程执行 = 自动驱动 + 人工决策<br>
+                    • 知识沉淀 = 自动化采集
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <div class="tip-title">💡 参考案例</div>
+                <div style="font-size: 0.9rem;">
+                    <strong>华为</strong>：实施IPD后开发周期缩短50%，故障率降低95%<br>
+                    <strong>IBM</strong>：研发费用减少50%，上市时间减少50%<br>
+                    <strong>美的</strong>：新品开发周期从6个月缩短至3个月
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第2部分：架构设计 -->
+        <section class="section" id="sec2">
+            <div class="section-title">2. 系统架构设计</div>
+            
+            <div class="card">
+                <div class="card-title">🏗️ 五大核心模块</div>
+                
+                <div class="module-grid">
+                    <div class="module-card">
+                        <div class="module-name">📊 项目管理</div>
+                        <ul class="module-features">
+                            <li>项目创建（单机/模块/软件）</li>
+                            <li>团队组建与角色分配</li>
+                            <li>自动排期与里程碑</li>
+                            <li>本地文件夹自动创建</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="module-card">
+                        <div class="module-name">🔧 项目开发</div>
+                        <ul class="module-features">
+                            <li>可视化流程活动流</li>
+                            <li>活动输入输出管理</li>
+                            <li>自动进度更新</li>
+                            <li>问题分级推送</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="module-card">
+                        <div class="module-name">🔬 技术开发</div>
+                        <ul class="module-features">
+                            <li>TR技术评审点管理</li>
+                            <li>CBB共用模块复用</li>
+                            <li>技术成熟度TRL评估</li>
+                            <li>仿真任务调度</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="module-card">
+                        <div class="module-name">📦 产品货架</div>
+                        <ul class="module-features">
+                            <li>上货架审批流程</li>
+                            <li>产品成熟度评级</li>
+                            <li>智能复用推荐</li>
+                            <li>复用率统计</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="module-card">
+                        <div class="module-name">📚 知识库</div>
+                        <ul class="module-features">
+                            <li>全文本搜索</li>
+                            <li>知识自动采集</li>
+                            <li>专家问答社区</li>
+                            <li>与项目关联</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">💾 本地/云端混合存储</div>
+                <div class="card-text" style="font-size: 0.9rem;">
+                    <strong>本地主存储</strong>：设计源文件（AD/Cadence）<br>
+                    <strong>云端备份</strong>：每天晚上23:00自动同步<br>
+                    <strong>云端主存储</strong>：流程数据、文档资料<br>
+                    <strong>本地缓存</strong>：云端文件按需下载
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第3部分：模块详细设计 -->
+        <section class="section" id="sec3">
+            <div class="section-title">3. 模块详细设计</div>
+            
+            <div class="subsection-title">3.1 项目管理 - 项目创建</div>
+            
+            <div class="flow-list">
+                <div class="flow-item">
+                    <div class="flow-num">1</div>
+                    <div class="flow-content">
+                        <div class="flow-title">选择项目类型</div>
+                        <div class="flow-desc">整机项目 / 模块项目 / 软件项目</div>
+                    </div>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-num">2</div>
+                    <div class="flow-content">
+                        <div class="flow-title">加载对应IPD流程</div>
+                        <div class="flow-desc">自动加载标准流程模板（TR1-7）</div>
+                    </div>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-num">3</div>
+                    <div class="flow-content">
+                        <div class="flow-title">组建团队与自动排期</div>
+                        <div class="flow-desc">选择成员角色，系统智能排程生成里程碑</div>
+                    </div>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-num">4</div>
+                    <div class="flow-content">
+                        <div class="flow-title">创建本地项目文件夹</div>
+                        <div class="flow-desc">自动创建标准化文件夹结构（01_项目管理～08_评审纪要）</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="subsection-title">3.2 项目开发 - 流程执行</div>
+            
+            <div class="card">
+                <div class="card-title">核心功能</div>
+                <ul class="module-features">
+                    <li>可视化流程活动流（TR阶段导航）</li>
+                    <li>活动输入输出管理（前置检查）</li>
+                    <li>自动进度更新（完成A→自动启动B）</li>
+                    <li>问题分级推送（一般/风险/重大）</li>
+                    <li>评审点自动通知（评审委员推送）</li>
+                </ul>
+                
+                <div class="expandable">
+                    <div class="expand-btn" onclick="toggleExpand(this)">查看页面原型 ▼</div>
+                    <div class="expand-content">
+                        <div class="prototype-box">
+┌─ 项目开发主界面 ──────────────────────────────────────┐
+│ PRJ_2026_001 智能网关      [进度: 35%] [问题: 2]    │
+├─────────────────────────────────────────────────────┤
+│                                                     │
+│  概念 计划 开发 验证 发布                          │
+│   ✓    ✓   ▶    ○    ○   ← 当前阶段              │
+│  CDCP  PDCP ADCP  LDCP                             │
+│                                                     │
+│ ┌─ TR3原型阶段 ──────────────────────────────────┐ │
+│ │                                                │ │
+│ │ [✓] 3.1 系统详细设计                          │ │
+│ │ [✓] 3.2 硬件概要设计                          │ │
+│ │ [▶] 3.3 原理图设计  ← 当前活动                │ │
+│ │      进度: [████████░░] 60%                   │ │
+│ │ [○] 3.4 PCB布局设计  依赖: 3.3完成            │ │
+│ │ [评审] 3.6 TR3技术评审  委员: 张三/李四       │ │
+│ │                                                │ │
+│ └────────────────────────────────────────────────┘ │
+│                                                     │
+│ [提交交付物] [提交问题] [申请评审]                │
+└─────────────────────────────────────────────────────┘
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="subsection-title">3.3 问题升级机制</div>
+            
+            <div class="card">
+                <div class="flow-list">
+                    <div class="flow-item">
+                        <div class="flow-num" style="background: #4caf50;">一般</div>
+                        <div class="flow-content">
+                            <div class="flow-title">一般问题</div>
+                            <div class="flow-desc">项目内解决 → 通知项目负责人</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-item">
+                        <div class="flow-num" style="background: #ff9800;">风险</div>
+                        <div class="flow-content">
+                            <div class="flow-title">技术风险</div>
+                            <div class="flow-desc">通知技术专家 → 召开技术评审会</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-item">
+                        <div class="flow-num" style="background: #f44336;">重大</div>
+                        <div class="flow-content">
+                            <div class="flow-title">重大风险</div>
+                            <div class="flow-desc">升级部门总监 → 决策委员会审议</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第4部分：核心业务流程 -->
+        <section class="section" id="sec4">
+            <div class="section-title">4. 核心业务流程</div>
+            
+            <div class="card">
+                <div class="card-title">🔄 项目创建流程</div>
+                <div style="font-size: 0.9rem; line-height: 2;">
+                    <strong>1. 选择项目类型</strong> → 整机/模块/软件<br>
+                    <strong>2. 选择流程模板</strong> → 自动加载IPD流程<br>
+                    <strong>3. 组建团队</strong> → PM/系统/射频/电源等角色<br>
+                    <strong>4. 自动排期</strong> → 生成TR阶段计划<br>
+                    <strong>5. 创建本地文件夹</strong> → 标准化目录结构<br><br>
+                    <span style="color: var(--success);">✓ 项目创建完成，进入项目开发界面</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">🔄 流程执行与自动驱动</div>
+                <div style="font-size: 0.9rem; line-height: 2;">
+                    活动A完成 → 自动检测 → 活动B启动 → 通知负责人<br><br>
+                    <strong>如果是评审点：</strong><br>
+                    自动通知评审委员 → 等待评审结果<br>
+                    ├─ 通过 → 进入下一活动<br>
+                    ├─ 有条件通过 → 返回修改<br>
+                    └─ 不通过 → 返工
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">🔄 项目结项后流程</div>
+                <div style="font-size: 0.9rem; line-height: 2;">
+                    项目完成<br>
+                    ├─→ 上货架流程 → 评估可复用性 → 审批 → 发布产品货架<br>
+                    ├─→ 批产流程 → 对接ERP/MES → 生成BOM/工艺 → 启动量产<br>
+                    └─→ 知识库收集 → 自动提取文档 → 提交审核 → 发布知识库
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第5部分：技术实现 -->
+        <section class="section" id="sec5">
+            <div class="section-title">5. 技术实现方案</div>
+            
+            <div class="subsection-title">5.1 技术选型</div>
+            
+            <div class="tech-list">
+                <div class="tech-item">
+                    <span class="tech-name">前端框架</span>
+                    <span class="tech-value">Vue3 + TypeScript</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-name">UI组件库</span>
+                    <span class="tech-value">Element Plus</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-name">后端服务</span>
+                    <span class="tech-value">Spring Boot 3.x + Java 17</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-name">工作流引擎</span>
+                    <span class="tech-value">Flowable 7.x (BPMN)</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-name">数据库</span>
+                    <span class="tech-value">MySQL 8.0 + MongoDB</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-name">缓存/搜索</span>
+                    <span class="tech-value">Redis + ElasticSearch</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-name">文件存储</span>
+                    <span class="tech-value">MinIO (本地) + 可选云端</span>
+                </div>
+            </div>
+            
+            <div class="subsection-title">5.2 关键技术难点</div>
+            
+            <div class="module-grid">
+                <div class="module-card">
+                    <div class="module-name">📐 PCB文件在线渲染</div>
+                    <div style="font-size: 0.85rem; color: var(--text-light);">
+                        Gerber/ODB++解析 → 矢量化 → WebGL渲染<br>
+                        参考：pcb.js、Gerber渲染引擎<br>
+                        难点：大板（>10层）LOD优化
+                    </div>
+                </div>
+                
+                <div class="module-card">
+                    <div class="module-name">📁 EDA设计数据版本管理</div>
+                    <div style="font-size: 0.85rem; color: var(--text-light);">
+                        Git LFS + 自定义diff算法<br>
+                        原理图/PCB文本格式解析<br>
+                        二进制文件智能diff
+                    </div>
+                </div>
+                
+                <div class="module-card">
+                    <div class="module-name">⚡ 仿真任务调度</div>
+                    <div style="font-size: 0.85rem; color: var(--text-light);">
+                        Celery + Redis任务队列<br>
+                        对接HFSS/CST Python API<br>
+                        License资源池管理
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 第6部分：实施路线 -->
+        <section class="section" id="sec6">
+            <div class="section-title">6. 实施路线图</div>
+            
+            <div class="subsection-title">6.1 分阶段实施</div>
+            
+            <div class="timeline-item">
+                <div class="timeline-phase">第一阶段 · 2-3月</div>
+                <div class="timeline-title">MVP：基础平台 + 核心流程</div>
+                <div class="timeline-content">
+                    项目管理基础、设计文件版本管理、PCB Viewer、文档中心<br>
+                    <span style="color: var(--success);">目标：内部试用（1个项目）</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item" style="border-left-color: var(--warning);">
+                <div class="timeline-phase" style="color: var(--warning);">第二阶段 · 3-4月</div>
+                <div class="timeline-title">核心功能：完整产品开发流程</div>
+                <div class="timeline-content">
+                    IPD流程引擎、在线原理图设计、评审管理、BOM管理、测试管理<br>
+                    <span style="color: var(--success);">目标：试点团队（5-10人）</span>
+                </div>
+            </div>
+            
+            <div class="timeline-item" style="border-left-color: var(--primary);">
+                <div class="timeline-phase" style="color: var(--primary);">第三阶段 · 3-4月</div>
+                <div class="timeline-title">高级功能：技术管理体系</div>
+                <div class="timeline-content">
+                    CBB管理、仿真集成、资源管理、专家问答社区、数据智能<br>
+                    <span style="color: var(--success);">目标：全面推广（40人团队）</span>
+                </div>
+            </div>
+            
+            <div class="subsection-title">6.2 资源评估</div>
+            
+            <div class="resource-grid">
+                <div class="resource-item">
+                    <div class="resource-num">8人</div>
+                    <div class="resource-label">核心团队</div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-num">~1年</div>
+                    <div class="resource-label">开发周期</div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-num">240万</div>
+                    <div class="resource-label">人力成本/年</div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-num">260万</div>
+                    <div class="resource-label">总成本/年</div>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <div class="tip-title">💡 成功关键因素</div>
+                <div style="font-size: 0.9rem;">
+                    1. <strong>流程标准化先行</strong>：先固化1-2个标准项目的IPD流程<br>
+                    2. <strong>试点项目验证</strong>：选择1个中等复杂度项目全程试用<br>
+                    3. <strong>与现有工具集成</strong>：保留AD/Cadence，平台作为协作层<br>
+                    4. <strong>激励机制</strong>：CBB贡献奖励、知识分享积分
+                </div>
+            </div>
+        </section>
+        
+        <!-- 页脚 -->
+        <div style="text-align: center; padding: 30px; color: var(--text-light); font-size: 0.85rem;">
+            <p>IPD硬件研发管理平台 · 详细实现方案</p>
+            <p style="margin-top: 8px;">基于IPD集成产品开发方法论设计</p>
+        </div>
+    </div>
+    
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" onclick="scrollToSection('sec1')">
+            <span class="nav-icon">📋</span>
+            <span>需求</span>
+        </button>
+        <button class="nav-btn" onclick="scrollToSection('sec2')">
+            <span class="nav-icon">🏗️</span>
+            <span>架构</span>
+        </button>
+        <button class="nav-btn" onclick="scrollToSection('sec3')">
+            <span class="nav-icon">⚙️</span>
+            <span>设计</span>
+        </button>
+        <button class="nav-btn" onclick="scrollToSection('sec4')">
+            <span class="nav-icon">🔄</span>
+            <span>流程</span>
+        </button>
+        <button class="nav-btn" onclick="scrollToSection('sec5')">
+            <span class="nav-icon">💻</span>
+            <span>技术</span>
+        </button>
+        <button class="nav-btn" onclick="scrollToSection('sec6')">
+            <span class="nav-icon">📅</span>
+            <span>实施</span>
+        </button>
+    </nav>
+    
+    <script>
+        // 滚动到指定section
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                const offset = 140; // 头部高度
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - offset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+                
+                // 更新导航状态
+                updateNavState(id);
+            }
+        }
+        
+        // 更新导航状态
+        function updateNavState(activeId) {
+            document.querySelectorAll('.toc-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === '#' + activeId) {
+                    item.classList.add('active');
+                }
+            });
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const index = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6'].indexOf(activeId);
+            if (index >= 0) {
+                document.querySelectorAll('.nav-btn')[index].classList.add('active');
+            }
+        }
+        
+        // 展开/收起
+        function toggleExpand(btn) {
+            const content = btn.nextElementSibling;
+            content.classList.toggle('show');
+            btn.textContent = content.classList.contains('show') ? '收起 ▲' : '查看页面原型 ▼';
+        }
+        
+        // 滚动监听，更新导航
+        window.addEventListener('scroll', () => {
+            const sections = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6'];
+            const scrollPos = window.scrollY + 200;
+            
+            for (let id of sections) {
+                const element = document.getElementById(id);
+                if (element && element.offsetTop <= scrollPos) {
+                    updateNavState(id);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
